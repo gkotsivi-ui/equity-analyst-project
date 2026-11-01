@@ -1,0 +1,10 @@
+﻿# Environment files may contain API keys and other secrets
+.env
+.env.*
+!.env.example
+
+# Python-generated files and local environments
+__pycache__/
+*.py[cod]
+.venv/
+venv/
