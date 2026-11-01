@@ -5,6 +5,8 @@ Run from the repository folder: python -m unittest discover -s tests
 
 from __future__ import annotations
 
+import contextlib
+import io
 import re
 import sys
 import tempfile
@@ -38,6 +40,27 @@ class TextTests(unittest.TestCase):
     def test_a_layout_table_keeps_its_paragraphs(self) -> None:
         html = "<table><tr><td><p>Item 7. Management's Discussion</p><p>Sales rose.</p></td></tr></table>"
         self.assertEqual(html_to_text(html), "Item 7. Management's Discussion\nSales rose.")
+
+    def test_line_breaks_in_the_html_source_are_spaces(self) -> None:
+        html = "<table>\n <tr>\n  <td><p>Total revenue</p></td>\n  <td><p>92,279</p></td>\n  <td><p>77,673</p></td>\n </tr>\n</table>"
+        self.assertEqual(html_to_text(html), "Total revenue | 92,279 | 77,673")
+
+    def test_step6_reads_the_income_statement_before_a_reconciliation_table(self) -> None:
+        folder = Path(tempfile.mkdtemp())
+        (folder / "8K.txt").write_text("\n".join([
+            "Diluted earnings per share | $4.92 | $(0.03) | $4.89 | $3.72",
+            "INCOME STATEMENTS",
+            "Three Months Ended September 30, | 2026 | 2025",
+            "Total revenue | 92,279 | 77,673",
+            "Earnings per share:",
+            "Diluted | $4.92 | $3.72",
+        ]), encoding="utf-8")
+        desk = Desk("Test Agent test@example.com", folder)
+        desk.selected = {"8-K": {"saved_text": str(folder / "8K.txt")}}
+        with contextlib.redirect_stdout(io.StringIO()):
+            desk.step6()
+        self.assertEqual((desk.quarter["revenue"], desk.quarter["revenue_prior"]), (92279.0, 77673.0))
+        self.assertEqual((desk.quarter["eps"], desk.quarter["eps_prior"]), (4.92, 3.72))
 
     def test_numbers_in_a_row(self) -> None:
         self.assertEqual(numbers_in("Diluted | $6.75 | $5.87 | 9.1% | $(0.40)"), [6.75, 5.87, -0.40])

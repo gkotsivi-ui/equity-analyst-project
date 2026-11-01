@@ -45,10 +45,13 @@ class TextExtractor(HTMLParser):
         self.parts: list[str] = []
         self.skip = 0
         self.cells = 0
+        self.pre = 0
 
     def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
         if tag in {"script", "style", "ix:header"}:
             self.skip += 1
+        elif tag == "pre":
+            self.pre += 1
         elif tag in {"td", "th"}:
             # Mark each table cell so a row prints as "Total revenue | 95,723 | 86,156".
             self.cells += 1
@@ -61,6 +64,8 @@ class TextExtractor(HTMLParser):
     def handle_endtag(self, tag: str) -> None:
         if tag in {"script", "style", "ix:header"} and self.skip:
             self.skip -= 1
+        elif tag == "pre" and self.pre:
+            self.pre -= 1
         elif tag in {"td", "th"}:
             self.cells = max(0, self.cells - 1)
         elif tag == "tr":
@@ -70,7 +75,8 @@ class TextExtractor(HTMLParser):
 
     def handle_data(self, data: str) -> None:
         if not self.skip:
-            self.parts.append(data)
+            # A line break in HTML source is a space; only <pre> keeps its lines.
+            self.parts.append(data if self.pre else data.replace("\r", " ").replace("\n", " "))
 
 
 def html_to_text(content: str) -> str:
@@ -444,9 +450,13 @@ class Desk:
         print("\n[6/7] Quote quarter revenue and diluted EPS lines from the release")
         path = Path(self.selected["8-K"]["saved_text"])
         lines = path.read_text(encoding="utf-8", errors="replace").splitlines()
+        # Search the income statement first: a reconciliation table above it can repeat the same labels
+        # with adjusted figures in its second column.
+        start = next((i for i, line in enumerate(lines) if len(line) < 90 and re.search(r"statements? of (income|operations|earnings)|income statements?", line, re.I)), 0)
+        order = list(range(start, len(lines))) + list(range(start))
         # A total row first; a release without one states revenue or sales on a row of its own.
         patterns = [r"\s*total\s*(net\s*)?(revenues?|sales)\b", r"\s*(net\s*)?(revenues?|sales)\b"]
-        revenue_index = next((i for p in patterns for i, line in enumerate(lines) if re.match(p, line, re.I) and len(numbers_in(line)) >= 2), None)
+        revenue_index = next((i for p in patterns for i in order if re.match(p, lines[i], re.I) and len(numbers_in(lines[i])) >= 2), None)
         print("  Total revenue row:")
         if revenue_index is None:
             print("    No matching table row found; inspect the saved release text manually.")
@@ -455,7 +465,7 @@ class Desk:
                 if line.strip():
                     print(f"    {line.strip()[:500]}")
 
-        eps_index = next((i for i, line in enumerate(lines) if re.match(r"\s*diluted\b.*\d\.\d{2}\b", line, re.I) and numbers_in(line)), None)
+        eps_index = next((i for i in order if re.match(r"\s*diluted\b.*\d\.\d{2}\b", lines[i], re.I) and numbers_in(lines[i])), None)
         eps_heading = None
         if eps_index is not None:
             eps_heading = next((i for i in range(eps_index - 1, max(-1, eps_index - 6), -1) if re.search(r"net income per common share|earnings per share", lines[i], re.I)), None)
