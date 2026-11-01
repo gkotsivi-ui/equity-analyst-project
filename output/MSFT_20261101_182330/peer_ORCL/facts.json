@@ -1,0 +1,244 @@
+{
+  "company": "ORACLE CORP",
+  "ticker": "ORCL",
+  "cik": "0001341439",
+  "fiscal_year_end": "2026-05-31",
+  "ten_k": "0001193125-26-277521",
+  "facts": {
+    "revenue": {
+      "tag": "Revenues",
+      "label": "Revenues",
+      "unit": "USD",
+      "current": {
+        "start": "2025-06-01",
+        "end": "2026-05-31",
+        "val": 67357000000,
+        "accn": "0001193125-26-277521",
+        "fy": 2026,
+        "fp": "FY",
+        "form": "10-K",
+        "filed": "2026-06-22",
+        "frame": "CY2025",
+        "unit": "USD"
+      },
+      "prior": {
+        "start": "2024-06-01",
+        "end": "2025-05-31",
+        "val": 57399000000,
+        "accn": "0001193125-26-277521",
+        "fy": 2026,
+        "fp": "FY",
+        "form": "10-K",
+        "filed": "2026-06-22",
+        "frame": "CY2024",
+        "unit": "USD"
+      },
+      "candidates": {
+        "Revenues": "2026-05-31",
+        "RevenueFromContractWithCustomerExcludingAssessedTax": "2026-05-31",
+        "SalesRevenueNet": "2011-05-31"
+      }
+    },
+    "operating_income": {
+      "tag": "OperatingIncomeLoss",
+      "label": "Operating Income (Loss)",
+      "unit": "USD",
+      "current": {
+        "start": "2025-06-01",
+        "end": "2026-05-31",
+        "val": 20606000000,
+        "accn": "0001193125-26-277521",
+        "fy": 2026,
+        "fp": "FY",
+        "form": "10-K",
+        "filed": "2026-06-22",
+        "frame": "CY2025",
+        "unit": "USD"
+      },
+      "prior": {
+        "start": "2024-06-01",
+        "end": "2025-05-31",
+        "val": 17678000000,
+        "accn": "0001193125-26-277521",
+        "fy": 2026,
+        "fp": "FY",
+        "form": "10-K",
+        "filed": "2026-06-22",
+        "frame": "CY2024",
+        "unit": "USD"
+      },
+      "candidates": {
+        "OperatingIncomeLoss": "2026-05-31"
+      }
+    },
+    "net_income": {
+      "tag": "NetIncomeLoss",
+      "label": "Net Income (Loss) Attributable to Parent",
+      "unit": "USD",
+      "current": {
+        "start": "2025-06-01",
+        "end": "2026-05-31",
+        "val": 17087000000,
+        "accn": "0001193125-26-277521",
+        "fy": 2026,
+        "fp": "FY",
+        "form": "10-K",
+        "filed": "2026-06-22",
+        "unit": "USD"
+      },
+      "prior": {
+        "start": "2024-06-01",
+        "end": "2025-05-31",
+        "val": 12443000000,
+        "accn": "0001193125-26-277521",
+        "fy": 2026,
+        "fp": "FY",
+        "form": "10-K",
+        "filed": "2026-06-22",
+        "unit": "USD"
+      },
+      "candidates": {
+        "NetIncomeLoss": "2026-05-31",
+        "ProfitLoss": "2026-05-31"
+      }
+    },
+    "diluted_eps": {
+      "tag": "EarningsPerShareDiluted",
+      "label": "Earnings Per Share, Diluted",
+      "unit": "USD/shares",
+      "current": {
+        "start": "2025-06-01",
+        "end": "2026-05-31",
+        "val": 5.83,
+        "accn": "0001193125-26-277521",
+        "fy": 2026,
+        "fp": "FY",
+        "form": "10-K",
+        "filed": "2026-06-22",
+        "frame": "CY2025",
+        "unit": "USD/shares"
+      },
+      "prior": {
+        "start": "2024-06-01",
+        "end": "2025-05-31",
+        "val": 4.34,
+        "accn": "0001193125-26-277521",
+        "fy": 2026,
+        "fp": "FY",
+        "form": "10-K",
+        "filed": "2026-06-22",
+        "frame": "CY2024",
+        "unit": "USD/shares"
+      },
+      "candidates": {
+        "EarningsPerShareDiluted": "2026-05-31"
+      }
+    },
+    "equity": {
+      "tag": "StockholdersEquity",
+      "label": "Stockholders' Equity Attributable to Parent",
+      "unit": "USD",
+      "current": {
+        "end": "2026-05-31",
+        "val": 42508000000,
+        "accn": "0001193125-26-277521",
+        "fy": 2026,
+        "fp": "FY",
+        "form": "10-K",
+        "filed": "2026-06-22",
+        "unit": "USD"
+      },
+      "prior": {
+        "end": "2025-05-31",
+        "val": 20451000000,
+        "accn": "0001193125-26-277521",
+        "fy": 2026,
+        "fp": "FY",
+        "form": "10-K",
+        "filed": "2026-06-22",
+        "frame": "CY2025Q2I",
+        "unit": "USD"
+      },
+      "candidates": {
+        "StockholdersEquity": "2026-05-31",
+        "StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest": "2026-05-31"
+      }
+    },
+    "long_term_debt": {
+      "tag": "LongTermDebt",
+      "label": "Long-term Debt",
+      "unit": "USD",
+      "current": null,
+      "prior": null,
+      "candidates": {
+        "LongTermDebt": "2022-05-31"
+      }
+    },
+    "current_debt": null,
+    "cash_from_operations": {
+      "tag": "NetCashProvidedByUsedInOperatingActivities",
+      "label": "Net Cash Provided by (Used in) Operating Activities",
+      "unit": "USD",
+      "current": {
+        "start": "2025-06-01",
+        "end": "2026-05-31",
+        "val": 31977000000,
+        "accn": "0001193125-26-277521",
+        "fy": 2026,
+        "fp": "FY",
+        "form": "10-K",
+        "filed": "2026-06-22",
+        "frame": "CY2025",
+        "unit": "USD"
+      },
+      "prior": {
+        "start": "2024-06-01",
+        "end": "2025-05-31",
+        "val": 20821000000,
+        "accn": "0001193125-26-277521",
+        "fy": 2026,
+        "fp": "FY",
+        "form": "10-K",
+        "filed": "2026-06-22",
+        "frame": "CY2024",
+        "unit": "USD"
+      },
+      "candidates": {
+        "NetCashProvidedByUsedInOperatingActivities": "2026-05-31",
+        "NetCashProvidedByUsedInOperatingActivitiesContinuingOperations": "2017-05-31"
+      }
+    },
+    "capex": {
+      "tag": "PaymentsToAcquirePropertyPlantAndEquipment",
+      "label": "Payments to Acquire Property, Plant, and Equipment",
+      "unit": "USD",
+      "current": {
+        "start": "2025-06-01",
+        "end": "2026-05-31",
+        "val": 55663000000,
+        "accn": "0001193125-26-277521",
+        "fy": 2026,
+        "fp": "FY",
+        "form": "10-K",
+        "filed": "2026-06-22",
+        "frame": "CY2025",
+        "unit": "USD"
+      },
+      "prior": {
+        "start": "2024-06-01",
+        "end": "2025-05-31",
+        "val": 21215000000,
+        "accn": "0001193125-26-277521",
+        "fy": 2026,
+        "fp": "FY",
+        "form": "10-K",
+        "filed": "2026-06-22",
+        "frame": "CY2024",
+        "unit": "USD"
+      },
+      "candidates": {
+        "PaymentsToAcquirePropertyPlantAndEquipment": "2026-05-31"
+      }
+    }
+  }
+}

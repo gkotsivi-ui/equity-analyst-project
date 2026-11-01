@@ -66,6 +66,12 @@ Each run writes `output/<TICKER>_<date>_<time>/`:
 | `roles.json` | every JSON hand-off between the Strategy Manager and the roles (Lab 03) |
 | `audit.md` | a blank audit table for the human sign-off (Lab 03) |
 
+## Reports in this repository
+
+| Company | Report | What it read |
+|---|---|---|
+| Microsoft (MSFT), the partner's pick for Checkpoint 1 | [output/MSFT_20261101_182330/report.md](output/MSFT_20261101_182330/report.md) | FY2026 10-K, Q1 FY2027 10-Q, and the Oct 28, 2026 earnings release |
+
 ## How the numbers are kept honest
 
 1. Step 2 reads each filing's "Accepted" time from its EDGAR index page, in Eastern time. The earnings

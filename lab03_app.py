@@ -603,7 +603,10 @@ class StrategyManager:
 
         def ratio(name: str) -> tuple[str, str]:
             r = ratios.get(name)
-            return (r["shown"], f"{r['arithmetic']} ($ millions)") if r and r["value"] is not None else ("not computed", "an input is missing")
+            if not r or r["value"] is None:
+                return "not computed", "an input is missing"
+            # P/E divides a price by a per-share figure; the other ratios use $ millions.
+            return r["shown"], r["arithmetic"] if name == "P/E" else f"{r['arithmetic']} ($ millions)"
 
         q = d.quarter
         rows = [
