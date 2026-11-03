@@ -1,0 +1,22 @@
+{
+ "node": "Strategy Manager",
+ "input": {
+  "problems": {
+   "research_analyst": [],
+   "financial_analyst": [
+    "latest_quarter: these numbers are not in the context as given: 2.5. Copy each number exactly as the context shows it, or ask the calculator."
+   ],
+   "investment_advisor": []
+  },
+  "runs": {
+   "research_analyst": 1,
+   "financial_analyst": 2,
+   "investment_advisor": 1
+  }
+ },
+ "output": {
+  "next": "Verifier",
+  "report": "output\\COST_20261103_085932\\report.md",
+  "parts_missing": []
+ }
+}

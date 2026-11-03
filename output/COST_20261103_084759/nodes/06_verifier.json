@@ -1,0 +1,24 @@
+{
+ "node": "Verifier",
+ "input": {
+  "report": "report.md",
+  "filing_texts": [
+   "10K_2026-10-07_cost-20260830.txt",
+   "10Q_2026-06-03_cost-20260510.txt",
+   "8K_2026-09-24_costex9918-k92426.txt"
+  ],
+  "facts": [
+   "facts.json",
+   "peer_facts.json"
+  ]
+ },
+ "output": {
+  "verified_report": "output\\COST_20261103_084759\\verified_report.md",
+  "counts": {
+   "correct": 108,
+   "wrong": 0,
+   "unsupported": 45,
+   "not checked": 2
+  }
+ }
+}

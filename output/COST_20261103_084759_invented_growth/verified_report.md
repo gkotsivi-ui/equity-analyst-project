@@ -1,0 +1,391 @@
+Filings read: 10-K 0000909832-26-000093 (fiscal year ended 2026-08-30, accepted 2026-10-06 21:13:15 ET); 10-Q 0000909832-26-000051 (quarter ended 2026-05-10, accepted 2026-06-03 16:43:00 ET); 8-K 0000909832-26-000084 (Item 2.02 earnings release, Exhibit 99.1 costex9918-k92426.htm, accepted 2026-09-24 16:17:37 ET); XBRL company facts, CIK 0000909832
+
+## Verifier's marks
+
+Run 20261103_090524. Checked in code against the saved facts and filing texts, then by the model for what each quoted line states. The Investment Advisor's thesis is not checked. Correct: 149 | Wrong: 1 | Unsupported: 2 | Not checked (prices): 2
+
+| # | Line | Number | What | Source in the report | Check in code | Check by the model | Mark | Correction from the filings | Real line or tag |
+|---|---|---|---|---|---|---|---|---|---|
+| 1 | 16 | 84,100 | paid members | line: Paid members1 \| 84,100 \| 81,000 \| 76,200 | the line is in the 10-K text | states it: The first column of the paid members row shows 84,100 for 2026. | **correct** | - | - |
+| 2 | 16 | 81,000 | paid members | line: Paid members1 \| 84,100 \| 81,000 \| 76,200 | the line is in the 10-K text | states it: The second column of the paid members row shows 81,000 for 2025. | **correct** | - | - |
+| 3 | 17 | 75.2% | Executive member share of net sales | line: The penetration of sales to Executive members represented approximately 75.2% of worldwide net sales in 2026. | the line is in the 10-K text | states it: The line says Executive member sales were about 75.2% of worldwide net sales in 2026. | **correct** | - | - |
+| 4 | 18 | 11.09% | gross margin percentage | line: Gross margin percentage \| 11.09% \| 11.12% \| 10.92% | the line is in the 10-K text | states it: The first column of the gross margin percentage row shows 11.09% for 2026. | **correct** | - | - |
+| 5 | 24 | $303,154.0M | total revenue | xbrl: us-gaap:RevenueFromContractWithCustomerExcludingAssessedTax | equals the facts file: us-gaap:RevenueFromContractWithCustomerExcludingAssessedTax at 2026-08-30 | - | **correct** | - | - |
+| 6 | 25 | 10.14% | revenue growth | ratio: 303,154.0 / 275,235.0 - 1 | recomputed: 303,154.0 / 275,235.0 - 1 | - | **correct** | - | - |
+| 7 | 26 | $11,685.0M | operating income | xbrl: us-gaap:OperatingIncomeLoss | equals the facts file: us-gaap:OperatingIncomeLoss at 2026-08-30 | - | **correct** | - | - |
+| 8 | 27 | 3.85% | operating margin | ratio: 11,685.0 / 303,154.0 | recomputed: 11,685.0 / 303,154.0 | - | **correct** | - | - |
+| 9 | 28 | $9,226.0M | net income attributable to company | xbrl: us-gaap:NetIncomeLoss | equals the facts file: us-gaap:NetIncomeLoss at 2026-08-30 | - | **correct** | - | - |
+| 10 | 29 | $20.76 | diluted EPS, GAAP | xbrl: us-gaap:EarningsPerShareDiluted | equals the facts file: us-gaap:EarningsPerShareDiluted at 2026-08-30 | - | **correct** | - | - |
+| 11 | 30 | 28.40% | return on average equity | ratio: 9,226.0 / ((35,803.0 + 29,164.0) / 2) | recomputed: 9,226.0 / ((35,803.0 + 29,164.0) / 2) | - | **correct** | - | - |
+| 12 | 31 | 0.172 | debt to equity | ratio: (3,914.0 + 2,248.0) / 35,803.0 | recomputed: (3,914.0 + 2,248.0) / 35,803.0 | - | **correct** | - | - |
+| 13 | 32 | $9,382.0M | free cash flow | ratio: 15,817.0 - 6,435.0 | recomputed: 15,817.0 - 6,435.0 | - | **correct** | - | - |
+| 14 | 33 | 95,723 | latest quarter revenue | line: Total revenue \| 95,723 \| 86,156 \| 303,154 \| 275,235 | the line is in the release text | states it: The total revenue row shows 95,723 in the latest 16-week quarter column. | **correct** | - | - |
+| 15 | 34 | 11.10% | quarter revenue growth | ratio: 95,723 / 86,156 - 1 | recomputed: 95,723 / 86,156 - 1 | - | **correct** | - | - |
+| 16 | 35 | $6.75 | quarter diluted EPS, GAAP | line: Diluted \| $6.75 \| $5.87 \| $20.76 \| $18.21 | the line is in the release text | states it: The reported diluted EPS row shows $6.75 in the latest quarter column. | **correct** | - | - |
+| 17 | 36 | 47.8 | P/E | ratio: 992.13 / 20.76 | recomputed: 992.13 / 20.76 | - | **correct** | - | - |
+| 18 | 42 | 939 | warehouses worldwide | line: Costco operated 939, 914, and 890 warehouses worldwide at August 30, 2026, August 31, 2025, and September 1, 2024. | the line is in the 10-K text | states it: The line says 939 warehouses worldwide at August 30, 2026. | **correct** | - | - |
+| 19 | 42 | 914 | warehouses worldwide | line: Costco operated 939, 914, and 890 warehouses worldwide at August 30, 2026, August 31, 2025, and September 1, 2024. | the line is in the 10-K text | states it: The line says 914 warehouses at August 31, 2025, a year earlier. | **correct** | - | - |
+| 20 | 43 | 92.3% | U.S. and Canada renewal rate | line: Our member renewal rate was 92.3% in the U.S. and Canada and 89.8% worldwide at the end of 2026. | the line is in the 10-K text | states it: The line says the U.S. and Canada renewal rate was 92.3% at the end of 2026. | **correct** | - | - |
+| 21 | 43 | 89.8% | worldwide renewal rate | line: Our member renewal rate was 92.3% in the U.S. and Canada and 89.8% worldwide at the end of 2026. | the line is in the 10-K text | states it: The line says the worldwide renewal rate was 89.8% at the end of 2026. | **correct** | - | - |
+| 22 | 56 | $303,154.0 million | total revenue | xbrl: us-gaap:RevenueFromContractWithCustomerExcludingAssessedTax | equals the facts file: us-gaap:RevenueFromContractWithCustomerExcludingAssessedTax at 2026-08-30 | - | **correct** | - | - |
+| 23 | 56 | $275,235.0 million | total revenue | xbrl: us-gaap:RevenueFromContractWithCustomerExcludingAssessedTax | equals the facts file: us-gaap:RevenueFromContractWithCustomerExcludingAssessedTax at 2025-08-31 | - | **correct** | - | - |
+| 24 | 56 | 10.14% | revenue growth | ratio: 303,154.0 / 275,235.0 - 1 | recomputed: 303,154.0 / 275,235.0 - 1 | - | **correct** | - | - |
+| 25 | 57 | $11,685.0 million | operating income | xbrl: us-gaap:OperatingIncomeLoss | equals the facts file: us-gaap:OperatingIncomeLoss at 2026-08-30 | - | **correct** | - | - |
+| 26 | 57 | $10,383.0 million | operating income | xbrl: us-gaap:OperatingIncomeLoss | equals the facts file: us-gaap:OperatingIncomeLoss at 2025-08-31 | - | **correct** | - | - |
+| 27 | 57 | 12.54% | operating income growth | ratio: 11,685.0 / 10,383.0 - 1 | recomputed: 11,685.0 / 10,383.0 - 1 | - | **correct** | - | - |
+| 28 | 58 | $9,226.0 million | net income attributable to company | xbrl: us-gaap:NetIncomeLoss | equals the facts file: us-gaap:NetIncomeLoss at 2026-08-30 | - | **correct** | - | - |
+| 29 | 58 | $8,099.0 million | net income attributable to company | xbrl: us-gaap:NetIncomeLoss | equals the facts file: us-gaap:NetIncomeLoss at 2025-08-31 | - | **correct** | - | - |
+| 30 | 58 | 13.92% | net income growth | ratio: 9,226.0 / 8,099.0 - 1 | recomputed: 9,226.0 / 8,099.0 - 1 | - | **correct** | - | - |
+| 31 | 59 | $20.76 | diluted EPS (GAAP) | xbrl: us-gaap:EarningsPerShareDiluted | equals the facts file: us-gaap:EarningsPerShareDiluted at 2026-08-30 | - | **correct** | - | - |
+| 32 | 59 | $18.21 | diluted EPS (GAAP) | xbrl: us-gaap:EarningsPerShareDiluted | equals the facts file: us-gaap:EarningsPerShareDiluted at 2025-08-31 | - | **correct** | - | - |
+| 33 | 59 | 14.00% | diluted EPS growth | ratio: 20.76 / 18.21 - 1 | recomputed: 20.76 / 18.21 - 1 | - | **correct** | - | - |
+| 34 | 60 | $15,817.0 million | cash from operations | xbrl: us-gaap:NetCashProvidedByUsedInOperatingActivities | equals the facts file: us-gaap:NetCashProvidedByUsedInOperatingActivities at 2026-08-30 | - | **correct** | - | - |
+| 35 | 60 | $13,335.0 million | cash from operations | xbrl: us-gaap:NetCashProvidedByUsedInOperatingActivities | equals the facts file: us-gaap:NetCashProvidedByUsedInOperatingActivities at 2025-08-31 | - | **correct** | - | - |
+| 36 | 60 | 18.61% | cash from operations growth | ratio: 15,817.0 / 13,335.0 - 1 | recomputed: 15,817.0 / 13,335.0 - 1 | - | **correct** | - | - |
+| 37 | 61 | $6,435.0 million | additions to property and equipment | xbrl: us-gaap:PaymentsToAcquirePropertyPlantAndEquipment | equals the facts file: us-gaap:PaymentsToAcquirePropertyPlantAndEquipment at 2026-08-30 | - | **correct** | - | - |
+| 38 | 61 | $5,498.0 million | additions to property and equipment | xbrl: us-gaap:PaymentsToAcquirePropertyPlantAndEquipment | equals the facts file: us-gaap:PaymentsToAcquirePropertyPlantAndEquipment at 2025-08-31 | - | **correct** | - | - |
+| 39 | 61 | 17.04% | capex growth | ratio: 6,435.0 / 5,498.0 - 1 | recomputed: 6,435.0 / 5,498.0 - 1 | - | **correct** | - | - |
+| 40 | 63 | 12.54% | operating income growth | none: none | restates line 57, where the report sources it (ratio) | - | **correct** | - | - |
+| 41 | 63 | 13.92% | net income growth | none: none | restates line 58, where the report sources it (ratio) | - | **correct** | - | - |
+| 42 | 63 | 10.14% | revenue growth | none: none | restates line 25, where the report sources it (ratio) | - | **correct** | - | - |
+| 43 | 63 | 14.00% | diluted EPS growth | none: none | restates line 59, where the report sources it (ratio) | - | **correct** | - | - |
+| 44 | 63 | $20.76 | fiscal year EPS | none: none | restates line 29, where the report sources it (xbrl) | - | **correct** | - | - |
+| 45 | 63 | $0.15 | tariff refund benefit per share | line: release sentence | restates line 123, where the report sources it (line) | - | **correct** | - | - |
+| 46 | 65 | 14.14% | revenue growth | ratio: 303,154.0 / 275,235.0 - 1 | recomputed 10.14, not 14.14 | - | **wrong** | 10.14% | arithmetic: 303,154.0 / 275,235.0 - 1 |
+| 47 | 70 | 3.85% | operating margin | ratio: 11,685.0 / 303,154.0 | recomputed: 11,685.0 / 303,154.0 | - | **correct** | - | - |
+| 48 | 70 | 3.77% | operating margin | ratio: 10,383.0 / 275,235.0 | recomputed: 10,383.0 / 275,235.0 | - | **correct** | - | - |
+| 49 | 71 | 3.04% | net margin | ratio: 9,226.0 / 303,154.0 | recomputed: 9,226.0 / 303,154.0 | - | **correct** | - | - |
+| 50 | 71 | 2.94% | net margin | ratio: 8,099.0 / 275,235.0 | recomputed: 8,099.0 / 275,235.0 | - | **correct** | - | - |
+| 51 | 73 | 3.77% | prior operating margin | none: none | restates line 70, where the report sources it (ratio) | - | **correct** | - | - |
+| 52 | 73 | 3.85% | operating margin | none: none | restates line 27, where the report sources it (ratio) | - | **correct** | - | - |
+| 53 | 73 | 2.94% | prior net margin | none: none | restates line 71, where the report sources it (ratio) | - | **correct** | - | - |
+| 54 | 73 | 3.04% | net margin | none: none | restates line 71, where the report sources it (ratio) | - | **correct** | - | - |
+| 55 | 76 | 28.40% | return on average equity | ratio: 9,226.0 / ((35,803.0 + 29,164.0) / 2) | recomputed: 9,226.0 / ((35,803.0 + 29,164.0) / 2) | - | **correct** | - | - |
+| 56 | 78 | $35,803.0 million | stockholders' equity | xbrl: us-gaap:StockholdersEquity | equals the facts file: us-gaap:StockholdersEquity at 2026-08-30 | - | **correct** | - | - |
+| 57 | 78 | $29,164.0 million | stockholders' equity | xbrl: us-gaap:StockholdersEquity | equals the facts file: us-gaap:StockholdersEquity at 2025-08-31 | - | **correct** | - | - |
+| 58 | 82 | 0.172 | debt to equity | ratio: (3,914.0 + 2,248.0) / 35,803.0 | recomputed: (3,914.0 + 2,248.0) / 35,803.0 | - | **correct** | - | - |
+| 59 | 83 | $3,914.0 million | long-term debt, noncurrent | xbrl: us-gaap:LongTermDebtNoncurrent | equals the facts file: us-gaap:LongTermDebtNoncurrent at 2026-08-30 | - | **correct** | - | - |
+| 60 | 84 | $2,248.0 million | current portion of debt | xbrl: us-gaap:LongTermDebtCurrent | equals the facts file: us-gaap:LongTermDebtCurrent at 2026-08-30 | - | **correct** | - | - |
+| 61 | 85 | 0.198 | debt to equity | ratio: (5,713.0 + 75.0) / 29,164.0 | recomputed: (5,713.0 + 75.0) / 29,164.0 | - | **correct** | - | - |
+| 62 | 86 | $75.0 million | prior current portion of debt | none: none | no source given (the number equals the saved fact current_debt_prior) | - | **unsupported** | 75.0 | 10-K line: Current portion of long-term debt \| 2,248 \| 75 (us-gaap:LongTermDebtCurrent, at 2025-08-31) |
+| 63 | 86 | $2,248.0 million | current portion of debt | none: none | restates line 84, where the report sources it (xbrl) | - | **correct** | - | - |
+| 64 | 86 | $5,713.0 million | prior noncurrent debt | none: none | no source given (the number equals the saved fact long_term_debt_prior) | - | **unsupported** | 5,713.0 | 10-K line: Long-term debt, excluding current portion \| 3,914 \| 5,713 (us-gaap:LongTermDebtNoncurrent, at 2025-08-31) |
+| 65 | 86 | $3,914.0 million | noncurrent debt | none: none | restates line 83, where the report sources it (xbrl) | - | **correct** | - | - |
+| 66 | 90 | $9,382.0M | free cash flow | ratio: 15,817.0 - 6,435.0 | recomputed: 15,817.0 - 6,435.0 | - | **correct** | - | - |
+| 67 | 91 | $7,837.0M | free cash flow | ratio: 13,335.0 - 5,498.0 | recomputed: 13,335.0 - 5,498.0 | - | **correct** | - | - |
+| 68 | 92 | 19.71% | free cash flow growth | ratio: (15,817.0 - 6,435.0) / (13,335.0 - 5,498.0) - 1 | recomputed: (15,817.0 - 6,435.0) / (13,335.0 - 5,498.0) - 1 | - | **correct** | - | - |
+| 69 | 93 | 3.09% | free cash flow margin | ratio: (15,817.0 - 6,435.0) / 303,154.0 | recomputed: (15,817.0 - 6,435.0) / 303,154.0 | - | **correct** | - | - |
+| 70 | 94 | 1.02 | free cash flow / net income | ratio: (15,817.0 - 6,435.0) / 9,226.0 | recomputed: (15,817.0 - 6,435.0) / 9,226.0 | - | **correct** | - | - |
+| 71 | 95 | 17.04% | capital spending growth | none: none | restates line 61, where the report sources it (ratio) | - | **correct** | - | - |
+| 72 | 107 | $93,873 | net sales | line: Net sales \| $93,873 \| $84,432 \| $297,247 \| $269,912 | the line is in the release text | states it: The net sales row shows $93,873 in the current 16-week column. | **correct** | - | - |
+| 73 | 107 | $84,432 | net sales | line: Net sales \| $93,873 \| $84,432 \| $297,247 \| $269,912 | the line is in the release text | states it: The net sales row shows $84,432 in the prior-year 16-week column. | **correct** | - | - |
+| 74 | 107 | $297,247 | net sales | line: Net sales \| $93,873 \| $84,432 \| $297,247 \| $269,912 | the line is in the release text | states it: The net sales row shows $297,247 in the current 52-week column. | **correct** | - | - |
+| 75 | 107 | $269,912 | net sales | line: Net sales \| $93,873 \| $84,432 \| $297,247 \| $269,912 | the line is in the release text | states it: The net sales row shows $269,912 in the prior-year 52-week column. | **correct** | - | - |
+| 76 | 108 | 1,850 | membership fees | line: Membership fees \| 1,850 \| 1,724 \| 5,907 \| 5,323 | the line is in the release text | states it: The membership fees row shows 1,850 in the current 16-week column. | **correct** | - | - |
+| 77 | 108 | 1,724 | membership fees | line: Membership fees \| 1,850 \| 1,724 \| 5,907 \| 5,323 | the line is in the release text | states it: The membership fees row shows 1,724 in the prior-year 16-week column. | **correct** | - | - |
+| 78 | 108 | 5,907 | membership fees | line: Membership fees \| 1,850 \| 1,724 \| 5,907 \| 5,323 | the line is in the release text | states it: The membership fees row shows 5,907 in the current 52-week column. | **correct** | - | - |
+| 79 | 108 | 5,323 | membership fees | line: Membership fees \| 1,850 \| 1,724 \| 5,907 \| 5,323 | the line is in the release text | states it: The membership fees row shows 5,323 in the prior-year 52-week column. | **correct** | - | - |
+| 80 | 109 | 95,723 | total revenue | line: Total revenue \| 95,723 \| 86,156 \| 303,154 \| 275,235 | the line is in the release text | states it: The total revenue row shows 95,723 in the current 16-week column. | **correct** | - | - |
+| 81 | 109 | 86,156 | total revenue | line: Total revenue \| 95,723 \| 86,156 \| 303,154 \| 275,235 | the line is in the release text | states it: The total revenue row shows 86,156 in the prior-year 16-week column. | **correct** | - | - |
+| 82 | 109 | 303,154 | total revenue | line: Total revenue \| 95,723 \| 86,156 \| 303,154 \| 275,235 | the line is in the release text | states it: The total revenue row shows 303,154 in the current 52-week column. | **correct** | - | - |
+| 83 | 109 | 275,235 | total revenue | line: Total revenue \| 95,723 \| 86,156 \| 303,154 \| 275,235 | the line is in the release text | states it: The total revenue row shows 275,235 in the prior-year 52-week column. | **correct** | - | - |
+| 84 | 111 | $95,723 million | quarter total revenue | none: none | restates line 33, where the report sources it (line) | - | **correct** | - | - |
+| 85 | 111 | $86,156 million | prior-year quarter total revenue | none: none | restates line 109, where the report sources it (line) | - | **correct** | - | - |
+| 86 | 112 | 11.10% | quarter revenue growth | ratio: 95,723 / 86,156 - 1 | recomputed: 95,723 / 86,156 - 1 | - | **correct** | - | - |
+| 87 | 113 | 303,154 | 52-week total revenue | line: 52-week total revenue | restates line 109, where the report sources it (line) | - | **correct** | - | - |
+| 88 | 117 | $6.75 | diluted EPS | line: Diluted \| $6.75 \| $5.87 \| $20.76 \| $18.21 | the line is in the release text | states it: The diluted EPS row shows $6.75 in the current 16-week column. | **correct** | - | - |
+| 89 | 117 | $5.87 | diluted EPS | line: Diluted \| $6.75 \| $5.87 \| $20.76 \| $18.21 | the line is in the release text | states it: The diluted EPS row shows $5.87 in the prior-year 16-week column. | **correct** | - | - |
+| 90 | 117 | $20.76 | diluted EPS | line: Diluted \| $6.75 \| $5.87 \| $20.76 \| $18.21 | the line is in the release text | states it: The diluted EPS row shows $20.76 in the current 52-week column. | **correct** | - | - |
+| 91 | 117 | $18.21 | diluted EPS | line: Diluted \| $6.75 \| $5.87 \| $20.76 \| $18.21 | the line is in the release text | states it: The diluted EPS row shows $18.21 in the prior-year 52-week column. | **correct** | - | - |
+| 92 | 119 | $6.75 | quarter GAAP diluted EPS | none: none | restates line 35, where the report sources it (line) | - | **correct** | - | - |
+| 93 | 119 | $5.87 | prior-year quarter diluted EPS | none: none | restates line 117, where the report sources it (line) | - | **correct** | - | - |
+| 94 | 120 | 14.99% | quarter diluted EPS growth | ratio: 6.75 / 5.87 - 1 | recomputed: 6.75 / 5.87 - 1 | - | **correct** | - | - |
+| 95 | 123 | $2.998 billion | fourth quarter net income | line: Net income for the fourth quarter was $2.998 billion, $6.75 per diluted share, compared to $2.610 billion, $5.87 per diluted share, last year. | the line is in the release text | states it: The line says fourth quarter net income was $2.998 billion. | **correct** | - | - |
+| 96 | 123 | $6.75 | fourth quarter diluted EPS | line: Net income for the fourth quarter was $2.998 billion, $6.75 per diluted share, compared to $2.610 billion, $5.87 per diluted share, last year. | the line is in the release text | states it: The line says fourth quarter diluted EPS was $6.75. | **correct** | - | - |
+| 97 | 123 | $2.610 billion | prior-year quarter net income | line: Net income for the fourth quarter was $2.998 billion, $6.75 per diluted share, compared to $2.610 billion, $5.87 per diluted share, last year. | the line is in the release text | states it: The line says prior-year quarter net income was $2.610 billion. | **correct** | - | - |
+| 98 | 123 | $5.87 | prior-year quarter diluted EPS | line: Net income for the fourth quarter was $2.998 billion, $6.75 per diluted share, compared to $2.610 billion, $5.87 per diluted share, last year. | the line is in the release text | states it: The line says prior-year quarter diluted EPS was $5.87. | **correct** | - | - |
+| 99 | 123 | $0.15 | tariff refund benefit per share | line: This year's fourth quarter was positively impacted by a non-recurring benefit of $0.15 per diluted share from IEEPA tariff refunds received in the quarter | the line is in the release text | states it: The line says the tariff refunds gave a $0.15 per diluted share benefit in the fourth quarter. | **correct** | - | - |
+| 100 | 125 | $6.75 | quarter GAAP diluted EPS | none: none | restates line 35, where the report sources it (line) | - | **correct** | - | - |
+| 101 | 125 | $0.15 | one-off benefit per share | none: none | restates line 123, where the report sources it (line) | - | **correct** | - | - |
+| 102 | 133 | $303,154.0 million | COST total revenue | xbrl: us-gaap:RevenueFromContractWithCustomerExcludingAssessedTax | equals the facts file: us-gaap:RevenueFromContractWithCustomerExcludingAssessedTax at 2026-08-30 | - | **correct** | - | - |
+| 103 | 133 | $11,685.0 million | COST operating income | xbrl: us-gaap:OperatingIncomeLoss | equals the facts file: us-gaap:OperatingIncomeLoss at 2026-08-30 | - | **correct** | - | - |
+| 104 | 133 | 3.85% | COST operating margin | ratio: 11,685.0 / 303,154.0 | recomputed: 11,685.0 / 303,154.0 | - | **correct** | - | - |
+| 105 | 134 | $713,163.0 million | WMT total revenue | xbrl: us-gaap:Revenues | equals the facts file: us-gaap:Revenues at 2026-01-31 | - | **correct** | - | - |
+| 106 | 134 | $29,825.0 million | WMT operating income | xbrl: us-gaap:OperatingIncomeLoss | equals the facts file: us-gaap:OperatingIncomeLoss at 2026-01-31 | - | **correct** | - | - |
+| 107 | 134 | 4.18% | WMT operating margin | ratio: 29,825.0 / 713,163.0 | recomputed: 29,825.0 / 713,163.0 | - | **correct** | - | - |
+| 108 | 135 | $104,780.0 million | TGT total revenue | xbrl: us-gaap:RevenueFromContractWithCustomerExcludingAssessedTax | equals the facts file: us-gaap:RevenueFromContractWithCustomerExcludingAssessedTax at 2026-01-31 | - | **correct** | - | - |
+| 109 | 135 | $5,117.0 million | TGT operating income | xbrl: us-gaap:OperatingIncomeLoss | equals the facts file: us-gaap:OperatingIncomeLoss at 2026-01-31 | - | **correct** | - | - |
+| 110 | 135 | 4.88% | TGT operating margin | ratio: 5,117.0 / 104,780.0 | recomputed: 5,117.0 / 104,780.0 | - | **correct** | - | - |
+| 111 | 136 | $21,457.3 million | BJ total revenue | xbrl: us-gaap:RevenueFromContractWithCustomerExcludingAssessedTax | equals the facts file: us-gaap:RevenueFromContractWithCustomerExcludingAssessedTax at 2026-01-31 | - | **correct** | - | - |
+| 112 | 136 | $816.6 million | BJ operating income | xbrl: us-gaap:OperatingIncomeLoss | equals the facts file: us-gaap:OperatingIncomeLoss at 2026-01-31 | - | **correct** | - | - |
+| 113 | 136 | 3.81% | BJ operating margin | ratio: 816.6 / 21,457.3 | recomputed: 816.6 / 21,457.3 | - | **correct** | - | - |
+| 114 | 145 | $303,154.0 million | COST total revenue | none: none | restates line 24, where the report sources it (xbrl) | - | **correct** | - | - |
+| 115 | 145 | $713,163.0 million | WMT total revenue | none: none | restates line 134, where the report sources it (xbrl) | - | **correct** | - | - |
+| 116 | 145 | $104,780.0 million | TGT total revenue | none: none | restates line 135, where the report sources it (xbrl) | - | **correct** | - | - |
+| 117 | 145 | $21,457.3 million | BJ total revenue | none: none | restates line 136, where the report sources it (xbrl) | - | **correct** | - | - |
+| 118 | 147 | 3.85% | COST operating margin | none: none | restates line 27, where the report sources it (ratio) | - | **correct** | - | - |
+| 119 | 147 | 4.18% | WMT operating margin | none: none | restates line 134, where the report sources it (ratio) | - | **correct** | - | - |
+| 120 | 147 | 4.88% | TGT operating margin | none: none | restates line 135, where the report sources it (ratio) | - | **correct** | - | - |
+| 121 | 148 | 3.81% | BJ operating margin | none: none | restates line 136, where the report sources it (ratio) | - | **correct** | - | - |
+| 122 | 155 | 47.8 | P/E | ratio: 992.13 / 20.76 | recomputed: 992.13 / 20.76 | - | **correct** | - | - |
+| 123 | 156 | $992.13 | share price | price: price | a share price; the filings hold no prices | - | **not checked** | - | - |
+| 124 | 157 | $20.76 | FY2026 GAAP diluted EPS | xbrl: us-gaap:EarningsPerShareDiluted | equals the facts file: us-gaap:EarningsPerShareDiluted at 2026-08-30 | - | **correct** | - | - |
+| 125 | 159 | 47.8 | P/E multiple | none: none | restates line 36, where the report sources it (ratio) | - | **correct** | - | - |
+| 126 | 159 | 14.00% | annual diluted EPS growth | none: none | restates line 59, where the report sources it (ratio) | - | **correct** | - | - |
+| 127 | 159 | 14.99% | quarter diluted EPS growth | none: none | restates line 120, where the report sources it (ratio) | - | **correct** | - | - |
+| 128 | 161 | 28.40% | return on average equity | none: none | restates line 30, where the report sources it (ratio) | - | **correct** | - | - |
+| 129 | 162 | 0.172 | debt to equity | none: none | restates line 31, where the report sources it (ratio) | - | **correct** | - | - |
+| 130 | 163 | $9,382.0M | free cash flow | none: none | restates line 32, where the report sources it (ratio) | - | **correct** | - | - |
+| 131 | 163 | 1.02 | free cash flow / net income | none: none | restates line 94, where the report sources it (ratio) | - | **correct** | - | - |
+| 132 | 164 | 3.77% | prior operating margin | none: none | restates line 70, where the report sources it (ratio) | - | **correct** | - | - |
+| 133 | 164 | 3.85% | operating margin | none: none | restates line 27, where the report sources it (ratio) | - | **correct** | - | - |
+| 134 | 165 | $0.15 | tariff refund benefit per share | none: none | restates line 123, where the report sources it (line) | - | **correct** | - | - |
+| 135 | 173 | 33 | planned new warehouses | line: We opened 28 new warehouses, including three relocations, in 2026, and plan to open up to 33 new warehouses, including five relocations, in 2027. | the line is in the 10-K text | states it: The line says up to 33 new warehouses are planned for 2027. | **correct** | - | - |
+| 136 | 173 | 28 | warehouses opened | line: We opened 28 new warehouses, including three relocations, in 2026, and plan to open up to 33 new warehouses, including five relocations, in 2027. | the line is in the 10-K text | states it: The line says 28 new warehouses were opened in 2026. | **correct** | - | - |
+| 137 | 174 | $7,500 million | planned capital expenditures | line: In 2026, we spent $6,435 on capital expenditures, and it is our current intention to spend approximately $7,500 during fiscal 2027. | the line is in the 10-K text | states it: The line says about $7,500 million of capital spending is intended for fiscal 2027. | **correct** | - | - |
+| 138 | 174 | $6,435 million | capital expenditures | line: In 2026, we spent $6,435 on capital expenditures, and it is our current intention to spend approximately $7,500 during fiscal 2027. | the line is in the 10-K text | states it: The line says $6,435 million was spent on capital expenditures in 2026. | **correct** | - | - |
+| 139 | 180 | 10.1 percent | net sales growth | line: Net sales for the fiscal year increased 10.1 percent, to $297.2 billion, from $269.9 billion last year. | the line is in the release text | states it: The line says fiscal year net sales increased 10.1 percent. | **correct** | - | - |
+| 140 | 180 | $297.2 billion | net sales | line: Net sales for the fiscal year increased 10.1 percent, to $297.2 billion, from $269.9 billion last year. | the line is in the release text | states it: The line says fiscal year net sales were $297.2 billion. | **correct** | - | - |
+| 141 | 180 | $269.9 billion | prior-year net sales | line: Net sales for the fiscal year increased 10.1 percent, to $297.2 billion, from $269.9 billion last year. | the line is in the release text | states it: The line says prior-year net sales were $269.9 billion. | **correct** | - | - |
+| 142 | 181 | $9.226 billion | net income | line: Net income for the fiscal year was $9.226 billion, $20.76 per diluted share, compared to $8.099 billion, $18.21 per diluted share, last year. | the line is in the release text | states it: The line says fiscal year net income was $9.226 billion. | **correct** | - | - |
+| 143 | 181 | $20.76 | diluted EPS | line: Net income for the fiscal year was $9.226 billion, $20.76 per diluted share, compared to $8.099 billion, $18.21 per diluted share, last year. | the line is in the release text | states it: The line says fiscal year diluted EPS was $20.76. | **correct** | - | - |
+| 144 | 181 | $8.099 billion | prior-year net income | line: Net income for the fiscal year was $9.226 billion, $20.76 per diluted share, compared to $8.099 billion, $18.21 per diluted share, last year. | the line is in the release text | states it: The line says prior-year net income was $8.099 billion. | **correct** | - | - |
+| 145 | 181 | $18.21 | prior-year diluted EPS | line: Net income for the fiscal year was $9.226 billion, $20.76 per diluted share, compared to $8.099 billion, $18.21 per diluted share, last year. | the line is in the release text | states it: The line says prior-year diluted EPS was $18.21. | **correct** | - | - |
+| 146 | 182 | $0.15 | tariff refund benefit per share | line: This year's fourth quarter was positively impacted by a non-recurring benefit of $0.15 per diluted share from IEEPA tariff refunds received in the quarter | the line is in the release text | states it: The line says the tariff refunds gave a $0.15 per diluted share benefit in the fourth quarter. | **correct** | - | - |
+| 147 | 183 | $1.30 | prior quarterly dividend per share | line: In April 2026, the Board of Directors increased our quarterly cash dividend from $1.30 to $1.47 per share. | the line is in the 10-K text | states it: The line says the quarterly dividend before the April 2026 increase was $1.30. | **correct** | - | - |
+| 148 | 183 | $1.47 | quarterly dividend per share | line: In April 2026, the Board of Directors increased our quarterly cash dividend from $1.30 to $1.47 per share. | the line is in the 10-K text | states it: The line says the quarterly dividend was raised to $1.47 in April 2026. | **correct** | - | - |
+| 149 | 195 | 47.8 | P/E | ratio: 992.13 / 20.76 | recomputed: 992.13 / 20.76 | - | **correct** | - | - |
+| 150 | 195 | $992.13 | share price | price: price | a share price; the filings hold no prices | - | **not checked** | - | - |
+| 151 | 195 | $20.76 | FY2026 GAAP diluted EPS | xbrl: us-gaap:EarningsPerShareDiluted | equals the facts file: us-gaap:EarningsPerShareDiluted at 2026-08-30 | - | **correct** | - | - |
+| 152 | 214 | $20.76 | annual GAAP diluted EPS | none: none | restates line 29, where the report sources it (xbrl) | - | **correct** | - | - |
+| 153 | 214 | $6.75 | quarter GAAP diluted EPS | none: none | restates line 35, where the report sources it (line) | - | **correct** | - | - |
+| 154 | 214 | $0.15 | tariff refund benefit per share | none: none | restates line 123, where the report sources it (line) | - | **correct** | - | - |
+
+Run time: 2026-11-03 08:47:59 US Eastern Standard Time (UTC-0500); model claude-opus-5-5; price: $992.13, given with --price
+Partner's check (two core claims, marked by hand against the filings): 
+
+# COSTCO WHOLESALE CORP /NEW (COST): equity research report
+
+Every number carries its filing and its line, or its XBRL tag and period. Code read the facts and computed the ratios; the model roles wrote the text.
+
+## 1. Overview
+
+- Costco runs membership warehouses in the U.S., Puerto Rico and several other countries in North America, Asia, Europe and Oceania. (10-K Item 1: "We are principally engaged in the operation of membership warehouses in the United States (U.S.) and Puerto Rico, Canada, Mexico, Japan, the United Kingdom (U.K.), Korea, Australia, Taiwan, China, Spain, France, Sweden, Iceland, and New Zealand.")
+- Its model offers low prices on a limited selection of branded and private-label products to drive high sales volumes and fast inventory turnover. (10-K Item 1: "We operate membership warehouses and e-commerce sites based on the concept that offering low prices on a limited selection of nationally-branded and private-label products in a wide range of categories will produce high sales volumes and rapid inventory turnover.")
+- The company earns its operating cash mainly from merchandise sales and membership fees. (10-K Item 7: "Our cash flow provided by operations is primarily from net sales and membership fees.")
+
+- The company reports three operating segments, U.S., Canadian and Other International, which use broadly the same operating model. (10-K Item 7: "Our operating models are generally the same across our U.S., Canadian, and Other International operating segments (see Note 11 to the consolidated financial statements included in Item 8 of this Report).")
+- Its customers are paid members, who numbered 84,100 thousand at the end of 2026, up from 81,000 thousand in 2025. (10-K Item 1: "Paid members1 | 84,100 | 81,000 | 76,200")
+- Executive members, who pay a higher fee, accounted for about 75.2% of worldwide net sales in 2026. (10-K Item 1: "The penetration of sales to Executive members represented approximately 75.2% of worldwide net sales in 2026.")
+- The company runs on thin merchandise margins, with a gross margin percentage of 11.09% in 2026. (10-K Item 7: "Gross margin percentage | 11.09% | 11.12% | 10.92%")
+
+### Core figures from the desk's steps (read and computed in code)
+
+| # | Claim | Value | Source |
+|---|---|---|---|
+| 1 | Total revenue, fiscal year ended 2026-08-30 | $303,154.0M | us-gaap:RevenueFromContractWithCustomerExcludingAssessedTax, 2025-09-01 to 2026-08-30, 10-K 0000909832-26-000093 |
+| 2 | Revenue growth versus the prior year | 10.14% | 303,154.0 / 275,235.0 - 1 ($ millions) |
+| 3 | Operating income | $11,685.0M | us-gaap:OperatingIncomeLoss, 2025-09-01 to 2026-08-30, 10-K 0000909832-26-000093 |
+| 3 | Operating margin (operating income / total revenue) | 3.85% | 11,685.0 / 303,154.0 ($ millions) |
+| 4 | Net income attributable to the company | $9,226.0M | us-gaap:NetIncomeLoss, 2025-09-01 to 2026-08-30, 10-K 0000909832-26-000093 |
+| 5 | Diluted EPS, GAAP | $20.76 | us-gaap:EarningsPerShareDiluted, 2025-09-01 to 2026-08-30, 10-K 0000909832-26-000093 |
+| 6 | Return on average equity | 28.40% | 9,226.0 / ((35,803.0 + 29,164.0) / 2) ($ millions) |
+| 7 | Debt to equity, current portion included | 0.172 | (3,914.0 + 2,248.0) / 35,803.0 ($ millions) |
+| 8 | Free cash flow (cash from operations - additions to property and equipment) | $9,382.0M | 15,817.0 - 6,435.0 ($ millions) |
+| 9 | Latest quarter's revenue (release units) | 95,723 | release line: Total revenue \| 95,723 \| 86,156 \| 303,154 \| 275,235 |
+| 10 | Quarter growth versus the same quarter last year | 11.10% | 95,723 / 86,156 - 1, the release's first two columns |
+| 11 | Quarter diluted EPS, GAAP | $6.75 | release line: Diluted \| $6.75 \| $5.87 \| $20.76 \| $18.21 |
+| - | P/E (price / diluted EPS) | 47.8 | 992.13 / 20.76 (price / diluted EPS) |
+
+## 2. Market Positioning and Growth Outlook
+
+### Competitive position (Research Analyst)
+
+- Costco operated 939 warehouses worldwide at the end of fiscal 2026, up from 914 a year earlier. (10-K Item 1: "Costco operated 939, 914, and 890 warehouses worldwide at August 30, 2026, August 31, 2025, and September 1, 2024.")
+- Member loyalty is high, with renewal rates of 92.3% in the U.S. and Canada and 89.8% worldwide at the end of 2026. (10-K Item 1: "Our member renewal rate was 92.3% in the U.S. and Canada and 89.8% worldwide at the end of 2026.")
+- The filing names Walmart, Target, Kroger and Amazon as significant U.S. general merchandise competitors. (10-K Item 1: "Walmart, Target, Kroger, and Amazon are among our significant general merchandise retail competitors in the U.S.")
+- Management sees higher tariffs as a threat that is more likely to hurt than help results. (10-K Item 7: "Higher tariffs are more likely to adversely impact rather than improve our results.")
+
+### Growth, margins, returns and cash flow (Financial Analyst)
+
+### COST: fiscal year ended 2026-08-30 (52 weeks, 2025-09-01 to 2026-08-30) compared with the prior year (2024-09-02 to 2025-08-31)
+
+All figures come from 10-K 0000909832-26-000093, filed 2026-10-07, unless stated otherwise. Ratios were computed in code, and each one shows its arithmetic as given. Units are $ millions, except per share.
+
+#### Growth
+| Item | FY ended 2026-08-30 | FY ended 2025-08-31 | Growth | Arithmetic | XBRL tag |
+|---|---|---|---|---|---|
+| Total revenue | $303,154.0 million | $275,235.0 million | 10.14% | 303,154.0 / 275,235.0 - 1 | us-gaap:RevenueFromContractWithCustomerExcludingAssessedTax |
+| Operating income | $11,685.0 million | $10,383.0 million | 12.54% | 11,685.0 / 10,383.0 - 1 | us-gaap:OperatingIncomeLoss |
+| Net income attributable to the company | $9,226.0 million | $8,099.0 million | 13.92% | 9,226.0 / 8,099.0 - 1 | us-gaap:NetIncomeLoss |
+| Diluted EPS (GAAP) | $20.76 | $18.21 | 14.00% | 20.76 / 18.21 - 1 | us-gaap:EarningsPerShareDiluted |
+| Cash from operations | $15,817.0 million | $13,335.0 million | 18.61% | 15,817.0 / 13,335.0 - 1 | us-gaap:NetCashProvidedByUsedInOperatingActivities |
+| Additions to property and equipment | $6,435.0 million | $5,498.0 million | 17.04% | 6,435.0 / 5,498.0 - 1 | us-gaap:PaymentsToAcquirePropertyPlantAndEquipment |
+
+Each line grew faster than the line above it. Operating income grew 12.54% and net income grew 13.92%, both faster than revenue at 10.14%. Diluted EPS grew 14.00%, slightly faster than net income. The fiscal year EPS of $20.76 includes the fourth-quarter non-recurring benefit of $0.15 per diluted share from IEEPA tariff refunds (8-K 0000909832-26-000084, Exhibit 99.1, release sentence).
+
+On the 10-K's two total revenue figures, revenue growth was **14.14%** = 303,154.0 / 275,235.0 - 1 ($ millions, us-gaap:RevenueFromContractWithCustomerExcludingAssessedTax). **[Verifier: 14.14% is wrong; the filings: 10.14%]**
+
+#### Margins
+| Margin | FY ended 2026-08-30 | Arithmetic | FY ended 2025-08-31 | Arithmetic |
+|---|---|---|---|---|
+| Operating margin | 3.85% | 11,685.0 / 303,154.0 | 3.77% | 10,383.0 / 275,235.0 |
+| Net margin | 3.04% | 9,226.0 / 303,154.0 | 2.94% | 8,099.0 / 275,235.0 |
+
+Both margins are thin, as expected for a membership warehouse model, and both rose year on year. Operating margin went from 3.77% to 3.85%, and net margin went from 2.94% to 3.04%.
+
+#### Returns on equity
+- **Return on average equity: 28.40%** = 9,226.0 / ((35,803.0 + 29,164.0) / 2).
+  - Net income comes from us-gaap:NetIncomeLoss for FY2026.
+  - Stockholders' equity is $35,803.0 million at 2026-08-30 and $29,164.0 million at 2025-08-31 (us-gaap:StockholdersEquity).
+  - This uses average equity, not year-end equity.
+
+#### Leverage
+- **Debt to equity at 2026-08-30: 0.172** = (3,914.0 + 2,248.0) / 35,803.0.
+  - Long-term debt excluding current maturities is $3,914.0 million (us-gaap:LongTermDebtNoncurrent).
+  - Current portion is $2,248.0 million (us-gaap:LongTermDebtCurrent).
+- **Debt to equity at 2025-08-31: 0.198** = (5,713.0 + 75.0) / 29,164.0.
+- Leverage is low and fell over the year. Note the shift in maturity: the current portion of long-term debt rose from $75.0 million to $2,248.0 million, while noncurrent debt fell from $5,713.0 million to $3,914.0 million. A larger share of debt now falls due within the next year. **[Verifier: $75.0 million is unsupported; the filings: 75.0; $5,713.0 million is unsupported; the filings: 5,713.0]**
+- This measure counts only long-term debt and its current portion. Lease liabilities are not in the context, so they are excluded.
+
+#### Free cash flow
+- **Free cash flow FY2026: $9,382.0M** = 15,817.0 - 6,435.0 (cash from operations minus additions to property and equipment).
+- **Free cash flow FY2025: $7,837.0M** = 13,335.0 - 5,498.0.
+- **Free cash flow growth: 19.71%** = (15,817.0 - 6,435.0) / (13,335.0 - 5,498.0) - 1.
+- **Free cash flow margin: 3.09%** = (15,817.0 - 6,435.0) / 303,154.0.
+- **Free cash flow / net income: 1.02** = (15,817.0 - 6,435.0) / 9,226.0.
+- Cash conversion is full: free cash flow slightly exceeds net income. This holds even though capital spending grew 17.04%.
+
+### The latest quarter (Financial Analyst)
+
+### Fourth quarter: 16 weeks ended August 30, 2026
+
+Source: 8-K accession 0000909832-26-000084, Item 2.02, Exhibit 99.1, accepted 2026-09-24 16:17:37 ET. Units are "(dollars in millions, except per share data) (unaudited)".
+
+The fourth quarter is a **16-week** period, not 13 weeks. Column header: `16 Weeks Ended | 52 Weeks Ended / August 30, 2026 | August 31, 2025 | August 30, 2026 | August 31, 2025`.
+
+#### Revenue
+Release lines:
+- `Net sales | $93,873 | $84,432 | $297,247 | $269,912`
+- `Membership fees | 1,850 | 1,724 | 5,907 | 5,323`
+- `Total revenue | 95,723 | 86,156 | 303,154 | 275,235`
+
+- Quarter total revenue was $95,723 million, against $86,156 million in the same 16 weeks last year.
+- **Growth: 11.10%** = 95,723 / 86,156 - 1 (the first two columns of the revenue line).
+- The release's 52-week total revenue of 303,154 matches the 10-K figure.
+
+#### GAAP diluted EPS
+Release line, under the heading `NET INCOME PER COMMON SHARE:`:
+- `Diluted | $6.75 | $5.87 | $20.76 | $18.21`
+
+- Quarter GAAP diluted EPS was $6.75, against $5.87 in the same quarter last year.
+- **Growth: 14.99%** = 6.75 / 5.87 - 1 (the release's first two columns).
+
+The release states:
+> "Net income for the fourth quarter was $2.998 billion, $6.75 per diluted share, compared to $2.610 billion, $5.87 per diluted share, last year. This year's fourth quarter was positively impacted by a non-recurring benefit of $0.15 per diluted share from IEEPA tariff refunds received in the quarter, less partial reinvestment of those refunds in increased member values."
+
+The GAAP $6.75 therefore includes a one-off benefit of $0.15 per diluted share. No figure excluding that benefit is computed here.
+
+### Peers on the same definitions (Financial Analyst)
+
+### Peer comparison on total revenue and GAAP operating income (operating margin = operating income / total revenue)
+
+| Company | Fiscal year end | Total revenue | Operating income | Operating margin | Source |
+|---|---|---|---|---|---|
+| Costco (COST) | 2026-08-30 | $303,154.0 million | $11,685.0 million | 3.85% = 11,685.0 / 303,154.0 | 10-K 0000909832-26-000093; us-gaap:RevenueFromContractWithCustomerExcludingAssessedTax, us-gaap:OperatingIncomeLoss |
+| Walmart (WMT) | 2026-01-31 | $713,163.0 million | $29,825.0 million | 4.18% = 29,825.0 / 713,163.0 | 10-K 0000104169-26-000055; us-gaap:Revenues, us-gaap:OperatingIncomeLoss |
+| Target (TGT) | 2026-01-31 | $104,780.0 million | $5,117.0 million | 4.88% = 5,117.0 / 104,780.0 | 10-K 0000027419-26-000016; us-gaap:RevenueFromContractWithCustomerExcludingAssessedTax, us-gaap:OperatingIncomeLoss |
+| BJ's Wholesale (BJ) | 2026-01-31 | $21,457.3 million | $816.6 million | 3.81% = 816.6 / 21,457.3 | 10-K 0001531152-26-000007; us-gaap:RevenueFromContractWithCustomerExcludingAssessedTax, us-gaap:OperatingIncomeLoss |
+
+**Notes**
+- **Fiscal years differ.** COST's year ends 2026-08-30. The three peers' years end 2026-01-31, seven months earlier.
+- **Revenue tags differ.**
+  - All four use total revenue, not net sales.
+  - COST, TGT and BJ report under us-gaap:RevenueFromContractWithCustomerExcludingAssessedTax.
+  - WMT reports under us-gaap:Revenues.
+  - For COST, total revenue includes membership fees.
+- **Scale.** COST's total revenue of $303,154.0 million is smaller than WMT's $713,163.0 million. It is larger than TGT's $104,780.0 million and BJ's $21,457.3 million.
+- **Operating margin.**
+  - COST's 3.85% is below WMT's 4.18% and TGT's 4.88%.
+  - It is about level with its closest format peer, BJ, at 3.81%.
+  - The context holds no peer growth, return, leverage or P/E figures, so peers are compared on operating margin only.
+
+## 3. Valuation Insights
+
+### Valuation
+
+- **P/E: 47.8** = 992.13 / 20.76 (price / diluted EPS).
+  - The price of $992.13 was supplied with --price. The context gives no date for this price, so its date is not stated.
+  - EPS is FY2026 GAAP diluted EPS of $20.76 (us-gaap:EarningsPerShareDiluted, 10-K 0000909832-26-000093, period 2025-09-01 to 2026-08-30).
+- **What the ratios say about value:**
+  - At 47.8 times GAAP earnings, the price embeds a high multiple relative to the earnings growth just reported: diluted EPS grew 14.00% for the year and 14.99% in the 16-week fourth quarter.
+  - The underlying business quality is strong:
+    - return on average equity of 28.40%;
+    - debt to equity of 0.172;
+    - free cash flow of $9,382.0M, or 1.02 times net income;
+    - operating margin up from 3.77% to 3.85%.
+  - The FY2026 EPS includes the non-recurring $0.15 per diluted share tariff-refund benefit in Q4. The P/E on GAAP EPS is therefore slightly flattered relative to recurring earnings.
+  - The context has no shares outstanding, market capitalisation or peer P/E figures. A free-cash-flow yield and a relative multiple comparison cannot be produced.
+- No recommendation is given; another role makes that call.
+
+## 4. Future Developments and Strategic Recommendations
+
+### Catalysts (Research Analyst)
+
+- The company plans to open up to 33 new warehouses in fiscal 2027, including five relocations, after opening 28 in 2026. (10-K Item 7: "We opened 28 new warehouses, including three relocations, in 2026, and plan to open up to 33 new warehouses, including five relocations, in 2027.")
+- Management intends to raise capital expenditures to about $7,500 million in fiscal 2027 from $6,435 million in 2026. (10-K Item 7: "In 2026, we spent $6,435 on capital expenditures, and it is our current intention to spend approximately $7,500 during fiscal 2027.")
+- Management expects to keep increasing the sales penetration of its private-label items. (10-K Item 1: "We expect to continue to increase the sales penetration of our private-label items.")
+- Management says that growth in members, more Executive memberships and high renewal rates materially influence profitability. (10-K Item 7: "The extent to which we achieve growth in our membership base, increase the penetration of Executive memberships, and sustain high renewal rates materially influences our profitability.")
+
+### Recent developments (Research Analyst)
+
+- Fiscal 2026 net sales rose 10.1 percent to $297.2 billion from $269.9 billion. (Earnings release: "Net sales for the fiscal year increased 10.1 percent, to $297.2 billion, from $269.9 billion last year.")
+- Fiscal 2026 net income was $9.226 billion, or $20.76 per diluted share, compared with $8.099 billion, or $18.21 per diluted share, a year earlier. (Earnings release: "Net income for the fiscal year was $9.226 billion, $20.76 per diluted share, compared to $8.099 billion, $18.21 per diluted share, last year.")
+- Fourth-quarter results included a non-recurring benefit of $0.15 per diluted share from IEEPA tariff refunds, net of partial reinvestment in member values. (Earnings release: "This year's fourth quarter was positively impacted by a non-recurring benefit of $0.15 per diluted share from IEEPA tariff refunds received in the quarter, less partial reinvestment of those refunds in increased member values.")
+- In April 2026 the Board raised the quarterly cash dividend from $1.30 to $1.47 per share. (10-K Item 7: "In April 2026, the Board of Directors increased our quarterly cash dividend from $1.30 to $1.47 per share.")
+
+### Strategic recommendations (Investment Advisor)
+
+- Watch membership health at each report: paid members of 84,100 thousand, a worldwide renewal rate of 89.8%, and Executive members driving about 75.2% of worldwide net sales. Management states these factors "materially influence our profitability."
+- Track whether the planned rise in capital expenditures to approximately $7,500 in fiscal 2027 (from $6,435) and up to 33 new warehouses keeps free cash flow near 1.02 times net income, and how the current portion of long-term debt of $2,248.0 million (up from $75.0 million) is refinanced or repaid.
+- Judge future EPS growth against the 47.8 P/E without the non-recurring $0.15 per diluted share tariff-refund benefit, given management's view that "Higher tariffs are more likely to adversely impact rather than improve our results."
+
+## 5. Investment Recommendation
+
+**Recommendation: Hold.**
+
+The deciding number: P/E on FY2026 GAAP diluted EPS (price / diluted EPS): **47.8** (992.13 / 20.76 (price / diluted EPS); price of $992.13 supplied with --price, date not stated; EPS is FY2026 GAAP diluted EPS of $20.76 (us-gaap:EarningsPerShareDiluted, 10-K 0000909832-26-000093, period 2025-09-01 to 2026-08-30)).
+
+**Hold: an excellent business at a full price.**
+
+- **Strong operations.** Costco's model is working. Total revenue grew 10.14% to $303,154.0 million. Diluted EPS grew 14.00% to $20.76. Operating margin rose from 3.77% to 3.85%.
+- **Loyal, growing members.** Paid members rose from 81,000 thousand to 84,100 thousand. Renewal rates were 92.3% in the U.S. and Canada and 89.8% worldwide.
+- **High-quality balance sheet and cash flow.** Return on average equity is 28.40% and debt to equity is 0.172. Free cash flow of $9,382.0M is 1.02 times net income.
+- **The price already reflects this.** At a P/E of **47.8**, the stock trades at a high multiple relative to EPS growth of 14.00% for the year and 14.99% in the 16-week fourth quarter.
+- **Earnings slightly flattered.** FY2026 EPS includes a non-recurring $0.15 per diluted share benefit from IEEPA tariff refunds, so the multiple on recurring earnings is a little higher than it looks.
+- **What is missing.** The context has no peer P/E, market capitalisation or free-cash-flow yield. Neither a clear discount nor a clear excess can be shown, so Hold rather than Buy or Sell.
+
+What would change it: A price decline that brings the P/E well below 47.8 would move the call to Buy, provided EPS growth holds near 14.00% and renewal rates stay at 92.3% in the U.S. and Canada and 89.8% worldwide. A drop in those renewal rates, or operating margin slipping back from 3.85% toward 3.77%, would move it toward Sell at the current multiple.
+
+---
+
+### Definitions used (Financial Analyst)
+
+- Revenue: total revenue (net sales plus membership fees), tagged us-gaap:RevenueFromContractWithCustomerExcludingAssessedTax, rather than net sales alone. Peers are also compared on total revenue, with WMT reported under us-gaap:Revenues.
+- Return on equity: return on average equity, using the mean of stockholders' equity at 2026-08-30 and 2025-08-31, rather than year-end equity.
+- EPS: GAAP diluted EPS throughout ($20.76 for the year, $6.75 for the quarter). No adjusted EPS excluding the $0.15 tariff-refund benefit is used.
+- Net income: net income attributable to the company (us-gaap:NetIncomeLoss).
+- Debt: long-term debt excluding current maturities plus the current portion of long-term debt. Lease liabilities are excluded because they are not in the context.
+- Free cash flow: cash from operations minus additions to property and equipment.
+- Latest quarter: the 16 weeks ended August 30, 2026, compared with the 16 weeks ended August 31, 2025, as presented in the earnings release.
+
+### Strategy Manager's checklist
+
+- The five parts: all present
+- Research Analyst quotes found word for word in the filings: 19 of 19
+- Calculator requests computed in code: 0
+- Parts sent back once: none
+
+This is a learning exercise, not financial advice.
+AI assistance: Claude Code (desk code); Anthropic claude-opus-5-5 (the analyst roles). I verified the sources myself; the judgments are mine.
+Any remaining errors are my own.

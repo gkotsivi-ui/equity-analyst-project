@@ -5,10 +5,32 @@ A ticker goes in. The desk finds the latest 10-K, 10-Q and earnings release, rea
 as XBRL data, computes the core ratios in code, and four roles write a five-part report.
 Nothing in the code names a company: the ticker is an argument.
 
+- `team.py`: the agent team (Lab 04), a LangGraph graph in code with a Verifier on every run.
+- `verifier.py`: the Verifier, which checks every sourced number in a report against the saved filings and facts.
+- `roles/`: each role's instructions, one file per role.
 - `lab02_desk.py`: the seven steps, from SEC EDGAR, with no model.
 - `lab03_app.py`: the seven steps, then the four roles of Figure 1 on Anthropic's API, then the report.
 - `prices.py`: a closing price for P/E, from financialdatasets.ai.
-- `check_env.py`: confirms that `.env` holds your SEC User-Agent and API key.
+- `check_env.py` and `set_keys.py`: check `.env`, and save pasted keys into it.
+
+## The agent team
+
+```mermaid
+flowchart LR
+    S[The steps<br/>filings, facts, ratios<br/>code, no model] --> RA[Research Analyst<br/>one model call]
+    RA --> FA[Financial Analyst<br/>one model call]
+    FA --> IA[Investment Advisor<br/>one model call]
+    IA --> SM[Strategy Manager<br/>checklist in code]
+    SM -. a failing part, once .-> RA
+    SM -. a failing part, once .-> FA
+    SM -. a failing part, once .-> IA
+    SM --> VF[Verifier<br/>every run, no flag turns it off]
+    VF --> R[verified report<br/>with its table of marks]
+```
+
+The order is the same on every run, and code decides every edge. A role the Manager sends back
+returns to the Manager, and no role runs more than two times in one run. Each role receives only the
+JSON the graph gives it: the task, the context and the expected output.
 
 ## Setup
 
@@ -32,6 +54,16 @@ On a Mac, use `cp .env.example .env`. Then fill in `.env`; it is never committed
 Check it with `python check_env.py`. It prints the first four characters of the key and your User-Agent.
 
 ## Run
+
+The agent team, with the Verifier on every run (Lab 04):
+
+```
+python team.py COST --peers WMT,TGT,BJ --price <close>
+python team.py --verify-only output/<run folder>
+```
+
+The node names print in the graph's order, then the path of the verified report. `--verify-only` runs
+the Verifier on a saved run and nothing else.
 
 The seven steps only (Lab 02):
 
@@ -62,9 +94,11 @@ Each run writes `output/<TICKER>_<date>_<time>/`:
 |---|---|
 | `10K_*.txt`, `10Q_*.txt`, `8K_*.txt` | the three documents as plain text; the 8-K file is Exhibit 99.1, the earnings release |
 | `facts.json`, `ratios.json`, `peer_facts.json` | each fact with its tag, period and filing; each ratio with its arithmetic |
-| `report.md` | the five-part report (Lab 03); line 1 names the filings and their accession numbers, line 2 the run time |
+| `report.md` | the five-part report; line 1 names the filings and their accession numbers, line 2 the run time |
+| `verified_report.md`, `verification.json` | the report with the Verifier's table of marks under its first line (Lab 04) |
+| `nodes/` | each node's input and output, numbered in the order the nodes ran (Lab 04) |
 | `roles.json` | every JSON hand-off between the Strategy Manager and the roles (Lab 03) |
-| `audit.md` | a blank audit table for the human sign-off (Lab 03) |
+| `audit.md` | a blank audit table for the human sign-off |
 
 ## Reports in this repository
 
@@ -89,6 +123,14 @@ Each run writes `output/<TICKER>_<date>_<time>/`:
    failing part back to its role once. Problems that remain are listed at the end of the report.
 6. The roles run on Claude Opus 5.5 with Anthropic's server-side fallback, which re-runs a declined
    request on another model. `roles.json` records which model served each call.
+7. The Verifier receives only the compiled report, the saved filing texts and the saved facts. It
+   skips the Investment Advisor's thesis. A model lists each number with the source the report gives
+   it. Code then checks each one: a number sourced to an XBRL tag and period against the facts file;
+   a quoted line against the filing text, allowing for spacing and formatting; a ratio by recomputing
+   its arithmetic. A model then checks that each quoted line states that number for that period, in
+   that definition. Each number is marked correct, wrong or unsupported. A number with no source is
+   unsupported, unless it repeats a number the report sources elsewhere. A wrong number is corrected
+   from the filings, with the real line or tag beside it.
 
 ## Tests
 
@@ -98,6 +140,9 @@ python -m unittest discover -s tests
 
 The tests need no network and no key. They cover the tag trap, the full-year filter, the table text,
 the quote and number checks, the calculator, and a full Strategy Manager run against a fake model.
+For the agent team, they check the fixed node order, the single send-back, and that every path to the
+end runs the Verifier with no option to turn it off. They also check the Verifier's marks on a seeded
+EPS, an invented growth rate, a price and an unsourced number.
 
 This is a learning exercise, not financial advice.
 AI assistance: Claude Code. I verified the sources myself; the judgments are mine.

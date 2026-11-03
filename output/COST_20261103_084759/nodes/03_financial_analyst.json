@@ -1,0 +1,316 @@
+{
+ "node": "Financial Analyst",
+ "input": {
+  "task": "Write the statement analysis of COSTCO WHOLESALE CORP /NEW (COST) for its fiscal year ended 2026-08-30: growth, margins, returns, leverage and cash flow; then the latest quarter from the release; then the peers; then valuation.",
+  "context": {
+   "company": "COSTCO WHOLESALE CORP /NEW",
+   "ticker": "COST",
+   "fiscal_year_end": "2026-08-30",
+   "facts": [
+    {
+     "concept": "Total revenue",
+     "calculator_name": "revenue",
+     "value": "$303,154.0 million",
+     "period": "2025-09-01 to 2026-08-30",
+     "tag": "us-gaap:RevenueFromContractWithCustomerExcludingAssessedTax (Revenue from Contract with Customer, Excluding Assessed Tax)",
+     "filing": "10-K 0000909832-26-000093, filed 2026-10-07",
+     "prior_year_value": "$275,235.0 million",
+     "prior_period": "2024-09-02 to 2025-08-31",
+     "prior_filing": "10-K 0000909832-26-000093"
+    },
+    {
+     "concept": "Operating income",
+     "calculator_name": "operating_income",
+     "value": "$11,685.0 million",
+     "period": "2025-09-01 to 2026-08-30",
+     "tag": "us-gaap:OperatingIncomeLoss (Operating Income (Loss))",
+     "filing": "10-K 0000909832-26-000093, filed 2026-10-07",
+     "prior_year_value": "$10,383.0 million",
+     "prior_period": "2024-09-02 to 2025-08-31",
+     "prior_filing": "10-K 0000909832-26-000093"
+    },
+    {
+     "concept": "Net income attributable to the company",
+     "calculator_name": "net_income",
+     "value": "$9,226.0 million",
+     "period": "2025-09-01 to 2026-08-30",
+     "tag": "us-gaap:NetIncomeLoss (Net Income (Loss) Attributable to Parent)",
+     "filing": "10-K 0000909832-26-000093, filed 2026-10-07",
+     "prior_year_value": "$8,099.0 million",
+     "prior_period": "2024-09-02 to 2025-08-31",
+     "prior_filing": "10-K 0000909832-26-000093"
+    },
+    {
+     "concept": "Diluted EPS (GAAP)",
+     "calculator_name": "diluted_eps",
+     "value": "$20.76",
+     "period": "2025-09-01 to 2026-08-30",
+     "tag": "us-gaap:EarningsPerShareDiluted (Earnings Per Share, Diluted)",
+     "filing": "10-K 0000909832-26-000093, filed 2026-10-07",
+     "prior_year_value": "$18.21",
+     "prior_period": "2024-09-02 to 2025-08-31",
+     "prior_filing": "10-K 0000909832-26-000093"
+    },
+    {
+     "concept": "Stockholders' equity",
+     "calculator_name": "equity",
+     "value": "$35,803.0 million",
+     "period": "at 2026-08-30",
+     "tag": "us-gaap:StockholdersEquity (Stockholders' Equity Attributable to Parent)",
+     "filing": "10-K 0000909832-26-000093, filed 2026-10-07",
+     "prior_year_value": "$29,164.0 million",
+     "prior_period": "at 2025-08-31",
+     "prior_filing": "10-K 0000909832-26-000093"
+    },
+    {
+     "concept": "Long-term debt",
+     "calculator_name": "long_term_debt",
+     "value": "$3,914.0 million",
+     "period": "at 2026-08-30",
+     "tag": "us-gaap:LongTermDebtNoncurrent (Long-term Debt, Excluding Current Maturities)",
+     "filing": "10-K 0000909832-26-000093, filed 2026-10-07",
+     "prior_year_value": "$5,713.0 million",
+     "prior_period": "at 2025-08-31",
+     "prior_filing": "10-K 0000909832-26-000093"
+    },
+    {
+     "concept": "Current portion of long-term debt",
+     "calculator_name": "current_debt",
+     "value": "$2,248.0 million",
+     "period": "at 2026-08-30",
+     "tag": "us-gaap:LongTermDebtCurrent (Long-term Debt, Current Maturities)",
+     "filing": "10-K 0000909832-26-000093, filed 2026-10-07",
+     "prior_year_value": "$75.0 million",
+     "prior_period": "at 2025-08-31",
+     "prior_filing": "10-K 0000909832-26-000093"
+    },
+    {
+     "concept": "Cash from operations",
+     "calculator_name": "cash_from_operations",
+     "value": "$15,817.0 million",
+     "period": "2025-09-01 to 2026-08-30",
+     "tag": "us-gaap:NetCashProvidedByUsedInOperatingActivities (Net Cash Provided by (Used in) Operating Activities)",
+     "filing": "10-K 0000909832-26-000093, filed 2026-10-07",
+     "prior_year_value": "$13,335.0 million",
+     "prior_period": "2024-09-02 to 2025-08-31",
+     "prior_filing": "10-K 0000909832-26-000093"
+    },
+    {
+     "concept": "Additions to property and equipment",
+     "calculator_name": "capex",
+     "value": "$6,435.0 million",
+     "period": "2025-09-01 to 2026-08-30",
+     "tag": "us-gaap:PaymentsToAcquirePropertyPlantAndEquipment (Payments to Acquire Property, Plant, and Equipment)",
+     "filing": "10-K 0000909832-26-000093, filed 2026-10-07",
+     "prior_year_value": "$5,498.0 million",
+     "prior_period": "2024-09-02 to 2025-08-31",
+     "prior_filing": "10-K 0000909832-26-000093"
+    }
+   ],
+   "ratios_computed_in_code": [
+    {
+     "name": "Revenue growth",
+     "value": "10.14%",
+     "arithmetic": "303,154.0 / 275,235.0 - 1 ($ millions, except per share)"
+    },
+    {
+     "name": "Operating margin",
+     "value": "3.85%",
+     "arithmetic": "11,685.0 / 303,154.0 ($ millions, except per share)"
+    },
+    {
+     "name": "Return on average equity",
+     "value": "28.40%",
+     "arithmetic": "9,226.0 / ((35,803.0 + 29,164.0) / 2) ($ millions, except per share)"
+    },
+    {
+     "name": "Debt to equity",
+     "value": "0.172",
+     "arithmetic": "(3,914.0 + 2,248.0) / 35,803.0 ($ millions, except per share)"
+    },
+    {
+     "name": "Free cash flow",
+     "value": "$9,382.0M",
+     "arithmetic": "15,817.0 - 6,435.0 ($ millions, except per share)"
+    },
+    {
+     "name": "P/E",
+     "value": "47.8",
+     "arithmetic": "992.13 / 20.76 (price / diluted EPS) ($ millions, except per share)"
+    },
+    {
+     "name": "Operating income growth",
+     "value": "12.54%",
+     "arithmetic": "11,685.0 / 10,383.0 - 1 ($ millions, except per share)"
+    },
+    {
+     "name": "Net income growth",
+     "value": "13.92%",
+     "arithmetic": "9,226.0 / 8,099.0 - 1 ($ millions, except per share)"
+    },
+    {
+     "name": "Cash from operations growth",
+     "value": "18.61%",
+     "arithmetic": "15,817.0 / 13,335.0 - 1 ($ millions, except per share)"
+    },
+    {
+     "name": "Additions to property and equipment growth",
+     "value": "17.04%",
+     "arithmetic": "6,435.0 / 5,498.0 - 1 ($ millions, except per share)"
+    },
+    {
+     "name": "Diluted EPS growth",
+     "value": "14.00%",
+     "arithmetic": "20.76 / 18.21 - 1 ($ millions, except per share)"
+    },
+    {
+     "name": "Net margin, latest year",
+     "value": "3.04%",
+     "arithmetic": "9,226.0 / 303,154.0 ($ millions, except per share)"
+    },
+    {
+     "name": "Operating margin, prior year",
+     "value": "3.77%",
+     "arithmetic": "10,383.0 / 275,235.0 ($ millions, except per share)"
+    },
+    {
+     "name": "Net margin, prior year",
+     "value": "2.94%",
+     "arithmetic": "8,099.0 / 275,235.0 ($ millions, except per share)"
+    },
+    {
+     "name": "Free cash flow, prior year",
+     "value": "$7,837.0M",
+     "arithmetic": "13,335.0 - 5,498.0 ($ millions, except per share)"
+    },
+    {
+     "name": "Free cash flow growth",
+     "value": "19.71%",
+     "arithmetic": "(15,817.0 - 6,435.0) / (13,335.0 - 5,498.0) - 1 ($ millions, except per share)"
+    },
+    {
+     "name": "Free cash flow margin",
+     "value": "3.09%",
+     "arithmetic": "(15,817.0 - 6,435.0) / 303,154.0 ($ millions, except per share)"
+    },
+    {
+     "name": "Free cash flow / net income",
+     "value": "1.02",
+     "arithmetic": "(15,817.0 - 6,435.0) / 9,226.0 ($ millions, except per share)"
+    },
+    {
+     "name": "Debt to equity, prior year",
+     "value": "0.198",
+     "arithmetic": "(5,713.0 + 75.0) / 29,164.0 ($ millions, except per share)"
+    },
+    {
+     "name": "Quarter diluted EPS growth on the same quarter last year",
+     "value": "14.99%",
+     "arithmetic": "6.75 / 5.87 - 1 (the release's first two columns) ($ millions, except per share)"
+    }
+   ],
+   "latest_quarter": {
+    "release": "8-K accession 0000909832-26-000084, Item 2.02, Exhibit 99.1, accepted 2026-09-24 16:17:37 ET",
+    "units": "the release states its own units (usually $ millions, except per share); copy its numbers as written",
+    "header_lines": [
+     "(dollars in millions, except per share data) (unaudited)",
+     "16 Weeks Ended | 52 Weeks Ended",
+     "August 30, 2026 | August 31, 2025 | August 30, 2026 | August 31, 2025",
+     "REVENUE",
+     "Net sales | $93,873 | $84,432 | $297,247 | $269,912",
+     "Membership fees | 1,850 | 1,724 | 5,907 | 5,323"
+    ],
+    "revenue_line": "Total revenue | 95,723 | 86,156 | 303,154 | 275,235",
+    "eps_heading": "NET INCOME PER COMMON SHARE:",
+    "eps_line": "Diluted | $6.75 | $5.87 | $20.76 | $18.21",
+    "release_sentence": "Net income for the fourth quarter was $2.998 billion, $6.75 per diluted share, compared to $2.610 billion, $5.87 per diluted share, last year. This year's fourth quarter was positively impacted by a non-recurring benefit of $0.15 per diluted share from IEEPA tariff refunds received in the quarter, less partial reinvestment of those refunds in increased member values. Net income for the fiscal year was $9.226 billion, $20.76 per diluted share, compared to $8.099 billion, $18.21 per diluted share, last year.",
+    "computed_in_code": [
+     {
+      "name": "Quarter revenue growth on the same quarter last year",
+      "value": "11.10%",
+      "arithmetic": "95,723 / 86,156 - 1 (the first two columns of the revenue line)"
+     }
+    ]
+   },
+   "peers": [
+    {
+     "company": "Walmart Inc.",
+     "ticker": "WMT",
+     "fiscal_year_end": "2026-01-31",
+     "ten_k": "0000104169-26-000055",
+     "total_revenue": "$713,163.0 million (us-gaap:Revenues)",
+     "operating_income": "$29,825.0 million (us-gaap:OperatingIncomeLoss)",
+     "operating_margin": "4.18% = 29,825.0 / 713,163.0 ($ millions)"
+    },
+    {
+     "company": "TARGET CORP",
+     "ticker": "TGT",
+     "fiscal_year_end": "2026-01-31",
+     "ten_k": "0000027419-26-000016",
+     "total_revenue": "$104,780.0 million (us-gaap:RevenueFromContractWithCustomerExcludingAssessedTax)",
+     "operating_income": "$5,117.0 million (us-gaap:OperatingIncomeLoss)",
+     "operating_margin": "4.88% = 5,117.0 / 104,780.0 ($ millions)"
+    },
+    {
+     "company": "BJ's Wholesale Club Holdings, Inc.",
+     "ticker": "BJ",
+     "fiscal_year_end": "2026-01-31",
+     "ten_k": "0001531152-26-000007",
+     "total_revenue": "$21,457.3 million (us-gaap:RevenueFromContractWithCustomerExcludingAssessedTax)",
+     "operating_income": "$816.6 million (us-gaap:OperatingIncomeLoss)",
+     "operating_margin": "3.81% = 816.6 / 21,457.3 ($ millions)"
+    }
+   ],
+   "price": "$992.13, given with --price",
+   "calculator_variables": {
+    "revenue": "303,154.0 ($ millions)",
+    "revenue_prior": "275,235.0 ($ millions)",
+    "operating_income": "11,685.0 ($ millions)",
+    "operating_income_prior": "10,383.0 ($ millions)",
+    "net_income": "9,226.0 ($ millions)",
+    "net_income_prior": "8,099.0 ($ millions)",
+    "diluted_eps": "20.76",
+    "diluted_eps_prior": "18.21",
+    "equity": "35,803.0 ($ millions)",
+    "equity_prior": "29,164.0 ($ millions)",
+    "long_term_debt": "3,914.0 ($ millions)",
+    "long_term_debt_prior": "5,713.0 ($ millions)",
+    "current_debt": "2,248.0 ($ millions)",
+    "current_debt_prior": "75.0 ($ millions)",
+    "cash_from_operations": "15,817.0 ($ millions)",
+    "cash_from_operations_prior": "13,335.0 ($ millions)",
+    "capex": "6,435.0 ($ millions)",
+    "capex_prior": "5,498.0 ($ millions)",
+    "quarter_revenue": "95,723.00",
+    "quarter_revenue_prior": "86,156.00",
+    "quarter_eps": "6.75",
+    "quarter_eps_prior": "5.87",
+    "price": "992.13"
+   }
+  },
+  "expected_output": {
+   "calculator_requests": "a list, possibly empty, of {\"name\": \"what it is\", \"expression\": \"arithmetic over context.calculator_variables, for example net_income / revenue\"}",
+   "statement_analysis": "Markdown: growth, margins, returns on equity, leverage and free cash flow, each number with its source",
+   "latest_quarter": "Markdown: the quarter's revenue, its growth on the same quarter last year and its GAAP diluted EPS, quoting the release lines",
+   "peer_comparison": "Markdown table: company, fiscal year end, total revenue, operating income, operating margin, and the source of each",
+   "valuation": "Markdown: P/E with its price, date and arithmetic, and what the ratios say about value; say so when there is no price",
+   "definitions": "a list of sentences, one for each definition you chose"
+  }
+ },
+ "output": {
+  "calculator_requests": [],
+  "statement_analysis": "### COST: fiscal year ended 2026-08-30 (52 weeks, 2025-09-01 to 2026-08-30) compared with the prior year (2024-09-02 to 2025-08-31)\n\nAll figures come from 10-K 0000909832-26-000093, filed 2026-10-07, unless stated otherwise. Ratios were computed in code, and each one shows its arithmetic as given. Units are $ millions, except per share.\n\n#### Growth\n| Item | FY ended 2026-08-30 | FY ended 2025-08-31 | Growth | Arithmetic | XBRL tag |\n|---|---|---|---|---|---|\n| Total revenue | $303,154.0 million | $275,235.0 million | 10.14% | 303,154.0 / 275,235.0 - 1 | us-gaap:RevenueFromContractWithCustomerExcludingAssessedTax |\n| Operating income | $11,685.0 million | $10,383.0 million | 12.54% | 11,685.0 / 10,383.0 - 1 | us-gaap:OperatingIncomeLoss |\n| Net income attributable to the company | $9,226.0 million | $8,099.0 million | 13.92% | 9,226.0 / 8,099.0 - 1 | us-gaap:NetIncomeLoss |\n| Diluted EPS (GAAP) | $20.76 | $18.21 | 14.00% | 20.76 / 18.21 - 1 | us-gaap:EarningsPerShareDiluted |\n| Cash from operations | $15,817.0 million | $13,335.0 million | 18.61% | 15,817.0 / 13,335.0 - 1 | us-gaap:NetCashProvidedByUsedInOperatingActivities |\n| Additions to property and equipment | $6,435.0 million | $5,498.0 million | 17.04% | 6,435.0 / 5,498.0 - 1 | us-gaap:PaymentsToAcquirePropertyPlantAndEquipment |\n\nEach line grew faster than the line above it. Operating income grew 12.54% and net income grew 13.92%, both faster than revenue at 10.14%. Diluted EPS grew 14.00%, slightly faster than net income. The fiscal year EPS of $20.76 includes the fourth-quarter non-recurring benefit of $0.15 per diluted share from IEEPA tariff refunds (8-K 0000909832-26-000084, Exhibit 99.1, release sentence).\n\n#### Margins\n| Margin | FY ended 2026-08-30 | Arithmetic | FY ended 2025-08-31 | Arithmetic |\n|---|---|---|---|---|\n| Operating margin | 3.85% | 11,685.0 / 303,154.0 | 3.77% | 10,383.0 / 275,235.0 |\n| Net margin | 3.04% | 9,226.0 / 303,154.0 | 2.94% | 8,099.0 / 275,235.0 |\n\nBoth margins are thin, as expected for a membership warehouse model, and both rose year on year. Operating margin went from 3.77% to 3.85%, and net margin went from 2.94% to 3.04%.\n\n#### Returns on equity\n- **Return on average equity: 28.40%** = 9,226.0 / ((35,803.0 + 29,164.0) / 2).\n  - Net income comes from us-gaap:NetIncomeLoss for FY2026.\n  - Stockholders' equity is $35,803.0 million at 2026-08-30 and $29,164.0 million at 2025-08-31 (us-gaap:StockholdersEquity).\n  - This uses average equity, not year-end equity.\n\n#### Leverage\n- **Debt to equity at 2026-08-30: 0.172** = (3,914.0 + 2,248.0) / 35,803.0.\n  - Long-term debt excluding current maturities is $3,914.0 million (us-gaap:LongTermDebtNoncurrent).\n  - Current portion is $2,248.0 million (us-gaap:LongTermDebtCurrent).\n- **Debt to equity at 2025-08-31: 0.198** = (5,713.0 + 75.0) / 29,164.0.\n- Leverage is low and fell over the year. Note the shift in maturity: the current portion of long-term debt rose from $75.0 million to $2,248.0 million, while noncurrent debt fell from $5,713.0 million to $3,914.0 million. A larger share of debt now falls due within the next year.\n- This measure counts only long-term debt and its current portion. Lease liabilities are not in the context, so they are excluded.\n\n#### Free cash flow\n- **Free cash flow FY2026: $9,382.0M** = 15,817.0 - 6,435.0 (cash from operations minus additions to property and equipment).\n- **Free cash flow FY2025: $7,837.0M** = 13,335.0 - 5,498.0.\n- **Free cash flow growth: 19.71%** = (15,817.0 - 6,435.0) / (13,335.0 - 5,498.0) - 1.\n- **Free cash flow margin: 3.09%** = (15,817.0 - 6,435.0) / 303,154.0.\n- **Free cash flow / net income: 1.02** = (15,817.0 - 6,435.0) / 9,226.0.\n- Cash conversion is full: free cash flow slightly exceeds net income. This holds even though capital spending grew 17.04%.",
+  "latest_quarter": "### Fourth quarter: 16 weeks ended August 30, 2026\n\nSource: 8-K accession 0000909832-26-000084, Item 2.02, Exhibit 99.1, accepted 2026-09-24 16:17:37 ET. Units are \"(dollars in millions, except per share data) (unaudited)\".\n\nThe fourth quarter is a **16-week** period, not 13 weeks. Column header: `16 Weeks Ended | 52 Weeks Ended / August 30, 2026 | August 31, 2025 | August 30, 2026 | August 31, 2025`.\n\n#### Revenue\nRelease lines:\n- `Net sales | $93,873 | $84,432 | $297,247 | $269,912`\n- `Membership fees | 1,850 | 1,724 | 5,907 | 5,323`\n- `Total revenue | 95,723 | 86,156 | 303,154 | 275,235`\n\n- Quarter total revenue was $95,723 million, against $86,156 million in the same 16 weeks last year.\n- **Growth: 11.10%** = 95,723 / 86,156 - 1 (the first two columns of the revenue line).\n- The release's 52-week total revenue of 303,154 matches the 10-K figure.\n\n#### GAAP diluted EPS\nRelease line, under the heading `NET INCOME PER COMMON SHARE:`:\n- `Diluted | $6.75 | $5.87 | $20.76 | $18.21`\n\n- Quarter GAAP diluted EPS was $6.75, against $5.87 in the same quarter last year.\n- **Growth: 14.99%** = 6.75 / 5.87 - 1 (the release's first two columns).\n\nThe release states:\n> \"Net income for the fourth quarter was $2.998 billion, $6.75 per diluted share, compared to $2.610 billion, $5.87 per diluted share, last year. This year's fourth quarter was positively impacted by a non-recurring benefit of $0.15 per diluted share from IEEPA tariff refunds received in the quarter, less partial reinvestment of those refunds in increased member values.\"\n\nThe GAAP $6.75 therefore includes a one-off benefit of $0.15 per diluted share. No figure excluding that benefit is computed here.",
+  "peer_comparison": "### Peer comparison on total revenue and GAAP operating income (operating margin = operating income / total revenue)\n\n| Company | Fiscal year end | Total revenue | Operating income | Operating margin | Source |\n|---|---|---|---|---|---|\n| Costco (COST) | 2026-08-30 | $303,154.0 million | $11,685.0 million | 3.85% = 11,685.0 / 303,154.0 | 10-K 0000909832-26-000093; us-gaap:RevenueFromContractWithCustomerExcludingAssessedTax, us-gaap:OperatingIncomeLoss |\n| Walmart (WMT) | 2026-01-31 | $713,163.0 million | $29,825.0 million | 4.18% = 29,825.0 / 713,163.0 | 10-K 0000104169-26-000055; us-gaap:Revenues, us-gaap:OperatingIncomeLoss |\n| Target (TGT) | 2026-01-31 | $104,780.0 million | $5,117.0 million | 4.88% = 5,117.0 / 104,780.0 | 10-K 0000027419-26-000016; us-gaap:RevenueFromContractWithCustomerExcludingAssessedTax, us-gaap:OperatingIncomeLoss |\n| BJ's Wholesale (BJ) | 2026-01-31 | $21,457.3 million | $816.6 million | 3.81% = 816.6 / 21,457.3 | 10-K 0001531152-26-000007; us-gaap:RevenueFromContractWithCustomerExcludingAssessedTax, us-gaap:OperatingIncomeLoss |\n\n**Notes**\n- **Fiscal years differ.** COST's year ends 2026-08-30. The three peers' years end 2026-01-31, seven months earlier.\n- **Revenue tags differ.**\n  - All four use total revenue, not net sales.\n  - COST, TGT and BJ report under us-gaap:RevenueFromContractWithCustomerExcludingAssessedTax.\n  - WMT reports under us-gaap:Revenues.\n  - For COST, total revenue includes membership fees.\n- **Scale.** COST's total revenue of $303,154.0 million is smaller than WMT's $713,163.0 million. It is larger than TGT's $104,780.0 million and BJ's $21,457.3 million.\n- **Operating margin.**\n  - COST's 3.85% is below WMT's 4.18% and TGT's 4.88%.\n  - It is about level with its closest format peer, BJ, at 3.81%.\n  - The context holds no peer growth, return, leverage or P/E figures, so peers are compared on operating margin only.",
+  "valuation": "### Valuation\n\n- **P/E: 47.8** = 992.13 / 20.76 (price / diluted EPS).\n  - The price of $992.13 was supplied with --price. The context gives no date for this price, so its date is not stated.\n  - EPS is FY2026 GAAP diluted EPS of $20.76 (us-gaap:EarningsPerShareDiluted, 10-K 0000909832-26-000093, period 2025-09-01 to 2026-08-30).\n- **What the ratios say about value:**\n  - At 47.8 times GAAP earnings, the price embeds a high multiple relative to the earnings growth just reported: diluted EPS grew 14.00% for the year and 14.99% in the 16-week fourth quarter.\n  - The underlying business quality is strong:\n    - return on average equity of 28.40%;\n    - debt to equity of 0.172;\n    - free cash flow of $9,382.0M, or 1.02 times net income;\n    - operating margin up from 3.77% to 3.85%.\n  - The FY2026 EPS includes the non-recurring $0.15 per diluted share tariff-refund benefit in Q4. The P/E on GAAP EPS is therefore slightly flattered relative to recurring earnings.\n  - The context has no shares outstanding, market capitalisation or peer P/E figures. A free-cash-flow yield and a relative multiple comparison cannot be produced.\n- No recommendation is given; another role makes that call.",
+  "definitions": [
+   "Revenue: total revenue (net sales plus membership fees), tagged us-gaap:RevenueFromContractWithCustomerExcludingAssessedTax, rather than net sales alone. Peers are also compared on total revenue, with WMT reported under us-gaap:Revenues.",
+   "Return on equity: return on average equity, using the mean of stockholders' equity at 2026-08-30 and 2025-08-31, rather than year-end equity.",
+   "EPS: GAAP diluted EPS throughout ($20.76 for the year, $6.75 for the quarter). No adjusted EPS excluding the $0.15 tariff-refund benefit is used.",
+   "Net income: net income attributable to the company (us-gaap:NetIncomeLoss).",
+   "Debt: long-term debt excluding current maturities plus the current portion of long-term debt. Lease liabilities are excluded because they are not in the context.",
+   "Free cash flow: cash from operations minus additions to property and equipment.",
+   "Latest quarter: the 16 weeks ended August 30, 2026, compared with the 16 weeks ended August 31, 2025, as presented in the earnings release."
+  ]
+ }
+}

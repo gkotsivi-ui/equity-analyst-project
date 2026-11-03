@@ -1,0 +1,187 @@
+{
+ "node": "The steps",
+ "input": {
+  "ticker": "COST",
+  "peers": [
+   "WMT",
+   "TGT",
+   "BJ"
+  ],
+  "price": 992.13
+ },
+ "output": {
+  "company": "COSTCO WHOLESALE CORP /NEW",
+  "cik": "0000909832",
+  "filings": {
+   "10-K": {
+    "accessionNumber": "0000909832-26-000093",
+    "filingDate": "2026-10-07",
+    "reportDate": "2026-08-30",
+    "accepted_index": "2026-10-06 21:13:15",
+    "exhibit99_1": null,
+    "saved_text": "output\\COST_20261103_085932\\10K_2026-10-07_cost-20260830.txt"
+   },
+   "10-Q": {
+    "accessionNumber": "0000909832-26-000051",
+    "filingDate": "2026-06-03",
+    "reportDate": "2026-05-10",
+    "accepted_index": "2026-06-03 16:43:00",
+    "exhibit99_1": null,
+    "saved_text": "output\\COST_20261103_085932\\10Q_2026-06-03_cost-20260510.txt"
+   },
+   "8-K": {
+    "accessionNumber": "0000909832-26-000084",
+    "filingDate": "2026-09-24",
+    "reportDate": "2026-09-24",
+    "accepted_index": "2026-09-24 16:17:37",
+    "exhibit99_1": "costex9918-k92426.htm",
+    "saved_text": "output\\COST_20261103_085932\\8K_2026-09-24_costex9918-k92426.txt"
+   }
+  },
+  "facts": "facts.json and peer_facts.json in this folder",
+  "ratios": [
+   {
+    "name": "Revenue growth",
+    "value": 0.10143695387577889,
+    "shown": "10.14%",
+    "arithmetic": "303,154.0 / 275,235.0 - 1"
+   },
+   {
+    "name": "Operating margin",
+    "value": 0.03854476602650798,
+    "shown": "3.85%",
+    "arithmetic": "11,685.0 / 303,154.0"
+   },
+   {
+    "name": "Return on average equity",
+    "value": 0.284021118413964,
+    "shown": "28.40%",
+    "arithmetic": "9,226.0 / ((35,803.0 + 29,164.0) / 2)"
+   },
+   {
+    "name": "Debt to equity",
+    "value": 0.17210848252939698,
+    "shown": "0.172",
+    "arithmetic": "(3,914.0 + 2,248.0) / 35,803.0"
+   },
+   {
+    "name": "Free cash flow",
+    "value": 9382000000.0,
+    "shown": "$9,382.0M",
+    "arithmetic": "15,817.0 - 6,435.0"
+   },
+   {
+    "name": "P/E",
+    "value": 47.79046242774566,
+    "shown": "47.8",
+    "arithmetic": "992.13 / 20.76 (price / diluted EPS)"
+   }
+  ],
+  "more_ratios": [
+   {
+    "name": "Operating income growth",
+    "value": 0.12539728402195904,
+    "shown": "12.54%",
+    "arithmetic": "11,685.0 / 10,383.0 - 1"
+   },
+   {
+    "name": "Net income growth",
+    "value": 0.1391529818496111,
+    "shown": "13.92%",
+    "arithmetic": "9,226.0 / 8,099.0 - 1"
+   },
+   {
+    "name": "Cash from operations growth",
+    "value": 0.18612673415823022,
+    "shown": "18.61%",
+    "arithmetic": "15,817.0 / 13,335.0 - 1"
+   },
+   {
+    "name": "Additions to property and equipment growth",
+    "value": 0.1704256093124772,
+    "shown": "17.04%",
+    "arithmetic": "6,435.0 / 5,498.0 - 1"
+   },
+   {
+    "name": "Diluted EPS growth",
+    "value": 0.14003294892915985,
+    "shown": "14.00%",
+    "arithmetic": "20.76 / 18.21 - 1"
+   },
+   {
+    "name": "Net margin, latest year",
+    "value": 0.03043337709546963,
+    "shown": "3.04%",
+    "arithmetic": "9,226.0 / 303,154.0"
+   },
+   {
+    "name": "Operating margin, prior year",
+    "value": 0.03772412665540356,
+    "shown": "3.77%",
+    "arithmetic": "10,383.0 / 275,235.0"
+   },
+   {
+    "name": "Net margin, prior year",
+    "value": 0.029425763438516175,
+    "shown": "2.94%",
+    "arithmetic": "8,099.0 / 275,235.0"
+   },
+   {
+    "name": "Free cash flow, prior year",
+    "value": 7837000000.0,
+    "shown": "$7,837.0M",
+    "arithmetic": "13,335.0 - 5,498.0"
+   },
+   {
+    "name": "Free cash flow growth",
+    "value": 0.197141763429884,
+    "shown": "19.71%",
+    "arithmetic": "(15,817.0 - 6,435.0) / (13,335.0 - 5,498.0) - 1"
+   },
+   {
+    "name": "Free cash flow margin",
+    "value": 0.03094796703985433,
+    "shown": "3.09%",
+    "arithmetic": "(15,817.0 - 6,435.0) / 303,154.0"
+   },
+   {
+    "name": "Free cash flow / net income",
+    "value": 1.01690873618036,
+    "shown": "1.02",
+    "arithmetic": "(15,817.0 - 6,435.0) / 9,226.0"
+   },
+   {
+    "name": "Debt to equity, prior year",
+    "value": 0.1984638595528734,
+    "shown": "0.198",
+    "arithmetic": "(5,713.0 + 75.0) / 29,164.0"
+   },
+   {
+    "name": "Quarter diluted EPS growth on the same quarter last year",
+    "value": 0.14991482112436105,
+    "shown": "14.99%",
+    "arithmetic": "6.75 / 5.87 - 1 (the release's first two columns)"
+   }
+  ],
+  "quarter": {
+   "revenue_line": "Total revenue | 95,723 | 86,156 | 303,154 | 275,235",
+   "revenue_headers": [
+    "(dollars in millions, except per share data) (unaudited)",
+    "16 Weeks Ended | 52 Weeks Ended",
+    "August 30, 2026 | August 31, 2025 | August 30, 2026 | August 31, 2025",
+    "REVENUE",
+    "Net sales | $93,873 | $84,432 | $297,247 | $269,912",
+    "Membership fees | 1,850 | 1,724 | 5,907 | 5,323"
+   ],
+   "eps_line": "Diluted | $6.75 | $5.87 | $20.76 | $18.21",
+   "eps_heading": "NET INCOME PER COMMON SHARE:",
+   "sentence": "Net income for the fourth quarter was $2.998 billion, $6.75 per diluted share, compared to $2.610 billion, $5.87 per diluted share, last year. This year's fourth quarter was positively impacted by a non-recurring benefit of $0.15 per diluted share from IEEPA tariff refunds received in the quarter, less partial reinvestment of those refunds in increased member values. Net income for the fiscal year was $9.226 billion, $20.76 per diluted share, compared to $8.099 billion, $18.21 per diluted share, last year.",
+   "revenue": 95723.0,
+   "revenue_prior": 86156.0,
+   "revenue_growth": 0.11104275964529453,
+   "eps": 6.75,
+   "eps_prior": 5.87
+  },
+  "price": "$992.13, given with --price"
+ }
+}

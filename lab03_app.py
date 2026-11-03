@@ -54,40 +54,17 @@ LABELS = {
 BUSINESS = (r"^\s*item\s*1\s*[.:\u2013\u2014-]?\s*(?:\|\s*)?business\b", r"^\s*item\s*1a\b")
 MDNA = (r"^\s*item\s*7\s*[.:\u2013\u2014-]?\s*(?:\|\s*)?management", r"^\s*item\s*7a\b|^\s*item\s*8\b")
 
-RESEARCH_ANALYST = """You are the Research Analyst on an equity research desk.
-The Strategy Manager sends you one JSON message with three keys: task, context and expected_output.
-Use only the context. It holds sections of the company's latest 10-K and the text of its latest earnings release.
-Every claim must quote its line. Copy one sentence or one table line from the context into "quote", character for character.
-Do not shorten a quote with "..." and do not change its words, numbers or punctuation.
-Write each claim as one plain sentence. Put a number in a claim only when its quote contains that number.
-Do not invent a number, a name, a product or an event. When the context does not support a claim, leave the claim out.
-Name the source of each quote: "10-K Item 1", "10-K Item 7" or "Earnings release".
-Do not give a recommendation. Another role does that.
-When the message has manager_feedback, correct each problem it names and return the complete output again.
-Reply with one JSON object in the shape of expected_output and nothing else."""
+ROLES = Path(__file__).resolve().parent / "roles"
 
-FINANCIAL_ANALYST = """You are the Financial Analyst on an equity research desk.
-The Strategy Manager sends you one JSON message with three keys: task, context and expected_output.
-Use only the context. Code read the facts from the company's XBRL filings and computed the ratios. Each item carries its tag, its period and its filing.
-Follow these rules:
-1. Copy every number exactly as the context shows it. Put its source beside it: the filing with its XBRL tag and period, or the earnings release line.
-2. Never compute a number yourself. When you need a ratio that the context does not hold, put it in calculator_requests. The Strategy Manager computes it in code and sends it back to you.
-3. Show the arithmetic of every ratio as the context gives it.
-4. Where a filing offers two definitions (total revenue or net sales, equity at year end or on average, GAAP or adjusted EPS), say which one you used.
-5. Compare the company with each peer on the same definition, and name the fiscal year of each figure.
-6. Do not give a recommendation. Another role does that.
-When the message has manager_feedback, correct each problem it names and return the complete output again.
-Reply with one JSON object in the shape of expected_output and nothing else."""
 
-INVESTMENT_ADVISOR = """You are the Investment Advisor on an equity research desk.
-The Strategy Manager sends you one JSON message with three keys: task, context and expected_output.
-The context holds only the outputs of the Research Analyst and the Financial Analyst. Use nothing else.
-Write a short thesis and one recommendation: Buy, Hold or Sell.
-Name the one number that decides the recommendation. Copy it exactly from the Financial Analyst's output, with its source.
-Every number you write must appear in the context exactly as you write it. Do not compute new numbers.
-Say what would change the recommendation.
-When the message has manager_feedback, correct each problem it names and return the complete output again.
-Reply with one JSON object in the shape of expected_output and nothing else."""
+def role_instructions(name: str) -> str:
+    """A role's instructions, from its own file in the roles folder."""
+    return (ROLES / f"{name}.md").read_text(encoding="utf-8").strip()
+
+
+RESEARCH_ANALYST = role_instructions("research_analyst")
+FINANCIAL_ANALYST = role_instructions("financial_analyst")
+INVESTMENT_ADVISOR = role_instructions("investment_advisor")
 
 CLAIM = {"claim": "One plain sentence.", "quote": "The exact line from the context that supports it.", "source": "10-K Item 1, 10-K Item 7 or Earnings release"}
 RESEARCH_OUTPUT = {
@@ -297,9 +274,9 @@ class StrategyManager:
 
     # ----- the three analysts -----
 
-    def research(self) -> dict[str, Any]:
+    def research_packet(self) -> dict[str, Any]:
         d = self.desk
-        packet = {
+        return {
             "task": f"Describe {d.company} ({d.ticker}) for an equity research report: its business model, its competitive position, its catalysts and its recent developments.",
             "context": {
                 "company": d.company,
@@ -312,6 +289,9 @@ class StrategyManager:
             },
             "expected_output": RESEARCH_OUTPUT,
         }
+
+    def research(self) -> dict[str, Any]:
+        packet = self.research_packet()
         print(f"[Strategy Manager] Research Analyst context: {len(self.business):,} + {len(self.mdna):,} + {len(self.release):,} characters of filings")
         output = self.model.ask("Research Analyst", RESEARCH_ANALYST, packet)
         problems = self.check_research(output)
@@ -339,15 +319,20 @@ class StrategyManager:
                         problems.append(f"{key}: the claim states {', '.join(extra)}, which its quote does not contain: {str(claim['claim'])[:240]}")
         return problems
 
-    def financial(self) -> dict[str, Any]:
+    def financial_packet(self) -> dict[str, Any]:
+        """The Financial Analyst's packet; the numbers in its context are the ones the analyst may state."""
         d = self.desk
         context = self.financial_context()
-        packet = {
+        self.known = number_keys(json.dumps(context, ensure_ascii=False))
+        return {
             "task": f"Write the statement analysis of {d.company} ({d.ticker}) for its fiscal year ended {d.selected['10-K']['reportDate']}: growth, margins, returns, leverage and cash flow; then the latest quarter from the release; then the peers; then valuation.",
             "context": context,
             "expected_output": FINANCIAL_OUTPUT,
         }
-        self.known = number_keys(json.dumps(context, ensure_ascii=False))
+
+    def financial(self) -> dict[str, Any]:
+        packet = self.financial_packet()
+        context = packet["context"]
         output = self.model.ask("Financial Analyst", FINANCIAL_ANALYST, packet)
         asks = output.get("calculator_requests") or []
         if isinstance(asks, list) and asks:
@@ -380,14 +365,17 @@ class StrategyManager:
                 problems.append(f"peer_comparison: the peer {peer['ticker']} is missing")
         return problems
 
-    def advice(self, research: dict[str, Any], financial: dict[str, Any]) -> dict[str, Any]:
+    def advice_packet(self, research: dict[str, Any], financial: dict[str, Any]) -> dict[str, Any]:
         d = self.desk
         analyst = {k: v for k, v in financial.items() if k != "calculator_requests"}
-        packet = {
+        return {
             "task": f"Write the investment thesis and the recommendation on {d.company} ({d.ticker}) from the two analysts' outputs.",
             "context": {"research_analyst": research, "financial_analyst": analyst},
             "expected_output": ADVISOR_OUTPUT,
         }
+
+    def advice(self, research: dict[str, Any], financial: dict[str, Any]) -> dict[str, Any]:
+        packet = self.advice_packet(research, financial)
         output = self.model.ask("Investment Advisor", INVESTMENT_ADVISOR, packet)
         problems = self.check_advice(output, packet["context"])
         if problems:
