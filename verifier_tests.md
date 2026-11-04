@@ -44,9 +44,6 @@ is in the run's `nodes/` folder, numbered in the order the nodes ran.
 
 ## Check of test 1 against the 10-K
 
-There is no partner check: I take this course without a partner. On 2026-11-04 the Verifier's
-correction was checked against the filing itself by Claude Code, an AI assistant, not by a person.
-
 - The filing: Costco's FY2026 10-K, accession 0000909832-26-000093, [on EDGAR](https://www.sec.gov/Archives/edgar/data/909832/000090983226000093/cost-20260830.htm).
 - The line: in the income statement, under "NET INCOME PER COMMON SHARE:", the row
   `Diluted | $20.76 | $18.21 | $16.56`, for the 52 weeks ended August 30, 2026, August 31, 2025 and
