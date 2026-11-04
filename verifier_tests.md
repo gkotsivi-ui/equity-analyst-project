@@ -42,9 +42,17 @@ is in the run's `nodes/` folder, numbered in the order the nodes ran.
   sentence that repeats the figure. The Verifier now prefers the statement's own per-share row, as in
   the later file linked above.
 
-## Partner's check of test 1
+## Check of test 1 against the 10-K
 
-Checked by hand against the 10-K, open at the per-share line: ______
+There is no partner check: I take this course without a partner. On 2026-11-04 the Verifier's
+correction was checked against the filing itself by Claude Code, an AI assistant, not by a person.
+
+- The filing: Costco's FY2026 10-K, accession 0000909832-26-000093, [on EDGAR](https://www.sec.gov/Archives/edgar/data/909832/000090983226000093/cost-20260830.htm).
+- The line: in the income statement, under "NET INCOME PER COMMON SHARE:", the row
+  `Diluted | $20.76 | $18.21 | $16.56`, for the 52 weeks ended August 30, 2026, August 31, 2025 and
+  September 1, 2024.
+- The result: the filing states diluted EPS of $20.76 for fiscal 2026. The seeded $21.76 is wrong,
+  and the Verifier's correction, $20.76 beside this same per-share line, is the filing's own figure.
 
 This is a learning exercise, not financial advice.
 AI assistance: Claude Code. I verified the sources myself; the judgments are mine.
