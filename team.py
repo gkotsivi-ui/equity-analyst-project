@@ -20,7 +20,7 @@ from typing import Any, TypedDict
 import requests
 from langgraph.graph import END, START, StateGraph
 
-from lab02_desk import Desk, load_dotenv, millions
+from lab02_desk import Desk, api_key_problem, env_path, is_placeholder, load_dotenv, millions, user_agent_problem
 from lab03_app import (
     DEFAULT_MODEL,
     FINANCIAL_ANALYST,
@@ -301,13 +301,16 @@ def main() -> int:
     env = load_dotenv()
 
     def setting(name: str, default: str = "") -> str:
-        return os.environ.get(name) or env.get(name) or default
+        value = os.environ.get(name) or env.get(name) or ""
+        return default if is_placeholder(value) else value
 
-    api_key = setting("API_KEY")
-    if not api_key.startswith("sk-ant-"):
-        print("API_KEY in .env is not an Anthropic key (those start with sk-ant-). Run python set_keys.py to paste one.", file=sys.stderr)
+    api_key = setting("API_KEY") or setting("ANTHROPIC_API_KEY")
+    problem = api_key_problem(api_key, env_path())
+    if problem:
+        print(problem, file=sys.stderr)
         return 2
     model = Model(api_key, setting("MODEL", DEFAULT_MODEL), setting("EFFORT", "medium"))
+    print(f"Model: {model.vendor} {model.model}")
 
     if args.verify_only:
         run_dir = Path(args.verify_only)
@@ -326,8 +329,9 @@ def main() -> int:
     if not args.ticker:
         parser.error("give a ticker, or --verify-only with a run folder")
     user_agent = setting("SEC_USER_AGENT")
-    if not user_agent or "your name" in user_agent.lower():
-        print("Missing SEC_USER_AGENT. Add SEC_USER_AGENT=Your Name your.email@purdue.edu to .env, then retry.", file=sys.stderr)
+    problem = user_agent_problem(user_agent, env_path())
+    if problem:
+        print(problem, file=sys.stderr)
         return 2
     run_time = datetime.now().astimezone()
     ticker = args.ticker.upper()

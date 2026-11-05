@@ -18,17 +18,31 @@ import re
 import sys
 from datetime import datetime
 from pathlib import Path
+from types import SimpleNamespace
 from typing import Any
 
 import anthropic
 import requests
 
-from lab02_desk import Desk, load_dotenv, millions
+from lab02_desk import Desk, api_key_problem, env_path, is_placeholder, load_dotenv, millions, provider_of, user_agent_problem
 from prices import last_close_before
 
 DEFAULT_MODEL = "claude-opus-5-5"
 # Models that accept the server-side fallback, which re-runs a declined request on another model.
 FALLBACK_MODELS = {"claude-opus-5-5", "claude-opus-5", "claude-sonnet-5-5", "claude-fable-5-1"}
+# With a Google AI Studio key (it starts with AIza), the roles run on Gemini instead; MODEL can name another Gemini model.
+GEMINI_MODEL = "gemini-3.8-flash"
+GEMINI_API = "https://generativelanguage.googleapis.com/v1beta"
+GEMINI_STOPS = {"STOP": "end_turn", "MAX_TOKENS": "max_tokens"}
+
+
+def model_for(provider: str, model: str) -> str:
+    """The model ID for the key's provider. MODEL may be written as CrewAI writes it (gemini/gemini-3.5-flash-lite);
+    a model of the other provider does not apply, so that provider's default is used."""
+    if provider == "google":
+        name = model.removeprefix("gemini/").removeprefix("models/")
+        return name if name.startswith("gemini") else GEMINI_MODEL
+    return model if model.startswith("claude") else DEFAULT_MODEL
 PARTS = [
     "Overview",
     "Market Positioning and Growth Outlook",
@@ -185,13 +199,17 @@ def cell(text: Any) -> str:
 
 
 class Model:
-    """One Anthropic model behind the three analyst roles; every exchange is kept for roles.json."""
+    """One model behind the analyst roles and the Verifier: Anthropic's API for an Anthropic key, Google's Gemini API
+    for a Google AI Studio key. Every exchange is kept for roles.json."""
 
     def __init__(self, api_key: str, model: str, effort: str) -> None:
-        self.client = anthropic.Anthropic(api_key=api_key)
-        self.model = model
+        self.provider = "google" if provider_of(api_key) == "google" else "anthropic"
+        self.vendor = "Google" if self.provider == "google" else "Anthropic"
+        self.model = model_for(self.provider, model)
         self.effort = effort
         self.exchanges: list[dict[str, Any]] = []
+        self.api_key = api_key if self.provider == "google" else ""
+        self.client = anthropic.Anthropic(api_key=api_key) if self.provider == "anthropic" else None
 
     def ask(self, role: str, instructions: str, packet: dict[str, Any]) -> dict[str, Any]:
         print(f"[{role}] working ({self.model})")
@@ -216,6 +234,8 @@ class Model:
         return data
 
     def send(self, instructions: str, packet: dict[str, Any]) -> tuple[str, Any]:
+        if self.provider == "google":
+            return self.send_gemini(instructions, packet)
         request: dict[str, Any] = {
             "model": self.model,
             "max_tokens": 32000,
@@ -246,6 +266,65 @@ class Model:
         if message.stop_reason == "max_tokens":
             print("    the reply reached max_tokens and may be cut off")
         return "".join(block.text for block in message.content if block.type == "text"), message
+
+    def send_gemini(self, instructions: str, packet: dict[str, Any]) -> tuple[str, Any]:
+        """One generateContent call to Gemini. The reply gets the fields that ask() reads from an Anthropic message."""
+        body = {
+            "systemInstruction": {"parts": [{"text": instructions}]},
+            "contents": [{"role": "user", "parts": [{"text": json.dumps(packet, indent=1, ensure_ascii=False)}]}],
+            "generationConfig": {"maxOutputTokens": 32000, "responseMimeType": "application/json"},
+        }
+        try:
+            # The key goes in a header, never in the URL.
+            response = requests.post(f"{GEMINI_API}/models/{self.model}:generateContent", json=body,
+                                     headers={"x-goog-api-key": self.api_key}, timeout=600)
+        except requests.RequestException as exc:
+            raise RoleError("Could not reach the Gemini API. Check the network and run again.") from exc
+        if response.status_code != 200:
+            raise RoleError(gemini_error(response, self.model))
+        try:
+            data = response.json()
+        except ValueError as exc:
+            raise RoleError("The Gemini API sent a reply that is not JSON. Run again.") from exc
+        blocked = (data.get("promptFeedback") or {}).get("blockReason")
+        if blocked:
+            raise RoleError(f"The model declined the request (Gemini block reason {blocked}).")
+        candidate = (data.get("candidates") or [{}])[0]
+        finish = str(candidate.get("finishReason") or "")
+        parts = (candidate.get("content") or {}).get("parts") or []
+        text = "".join(str(p.get("text", "")) for p in parts if not p.get("thought"))
+        if not text and finish not in GEMINI_STOPS:
+            raise RoleError(f"The model declined the request (Gemini finish reason {finish or 'none'}).")
+        usage = data.get("usageMetadata") or {}
+        message = SimpleNamespace(
+            model=data.get("modelVersion") or self.model,
+            stop_reason=GEMINI_STOPS.get(finish, finish.lower()),
+            usage=SimpleNamespace(
+                input_tokens=int(usage.get("promptTokenCount") or 0),
+                output_tokens=int(usage.get("candidatesTokenCount") or 0) + int(usage.get("thoughtsTokenCount") or 0),
+            ),
+        )
+        if message.stop_reason == "max_tokens":
+            print("    the reply reached max_tokens and may be cut off")
+        return text, message
+
+
+def gemini_error(response: requests.Response, model: str) -> str:
+    """The Gemini API's error, with what to do about it."""
+    try:
+        error = response.json().get("error") or {}
+    except (ValueError, AttributeError):
+        error = {}
+    said = str(error.get("message") or response.text[:300]).strip()
+    code = response.status_code
+    if code in (401, 403) or "API key" in said or "API_KEY" in json.dumps(error):
+        return f"The Gemini API rejected API_KEY ({code}: {said}). Paste a valid key from aistudio.google.com into .env."
+    if code == 404:
+        return f"Model {model} was not found ({said}). Set MODEL in .env to a current Gemini model ID, for example {GEMINI_MODEL}."
+    if code == 429:
+        return (f"The Gemini API is limiting this key ({said}). Wait a minute and run again, "
+                "or set MODEL in .env to a model with more free quota, for example gemini-3.5-flash-lite.")
+    return f"The Gemini API refused the request ({code}): {said}"
 
 
 class StrategyManager:
@@ -658,7 +737,7 @@ class StrategyManager:
         body += ["### Strategy Manager's checklist", "", "\n".join(checklist), ""]
         body += [
             "This is a learning exercise, not financial advice.",
-            f"AI assistance: {self.tools} (desk code); Anthropic {self.model.model} (the analyst roles). I verified the sources myself; the judgments are mine.",
+            f"AI assistance: {self.tools} (desk code); {getattr(self.model, 'vendor', 'Anthropic')} {self.model.model} (the analyst roles). I verified the sources myself; the judgments are mine.",
             "Any remaining errors are my own.",
             "",
         ]
@@ -729,14 +808,13 @@ def main() -> int:
     env = load_dotenv()
 
     def setting(name: str, default: str = "") -> str:
-        return os.environ.get(name) or env.get(name) or default
+        value = os.environ.get(name) or env.get(name) or ""
+        return default if is_placeholder(value) else value
 
-    user_agent, api_key = setting("SEC_USER_AGENT"), setting("API_KEY")
-    if not user_agent or "your name" in user_agent.lower():
-        print("Missing SEC_USER_AGENT. Add SEC_USER_AGENT=Your Name your.email@purdue.edu to .env, then retry.", file=sys.stderr)
-        return 2
-    if not api_key.startswith("sk-ant-"):
-        print("API_KEY in .env is not an Anthropic key (those start with sk-ant-). Create one at platform.claude.com, paste it into .env, then retry.", file=sys.stderr)
+    user_agent, api_key = setting("SEC_USER_AGENT"), setting("API_KEY") or setting("ANTHROPIC_API_KEY")
+    problem = user_agent_problem(user_agent, env_path()) or api_key_problem(api_key, env_path())
+    if problem:
+        print(problem, file=sys.stderr)
         return 2
     run_time = datetime.now().astimezone()
     ticker = args.ticker.upper()

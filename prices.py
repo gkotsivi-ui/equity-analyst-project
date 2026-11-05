@@ -11,14 +11,15 @@ from typing import Any
 
 import requests
 
-from lab02_desk import load_dotenv
+from lab02_desk import is_placeholder, load_dotenv
 
 API = "https://api.financialdatasets.ai/prices/"
 CLOSE = time(16, 0)  # A trading day's close is 4:00 PM Eastern.
 
 
 def api_key() -> str:
-    return os.environ.get("FINANCIAL_DATASETS_API_KEY") or load_dotenv().get("FINANCIAL_DATASETS_API_KEY", "")
+    key = os.environ.get("FINANCIAL_DATASETS_API_KEY") or load_dotenv().get("FINANCIAL_DATASETS_API_KEY", "")
+    return "" if is_placeholder(key) else key
 
 
 def daily_closes(ticker: str, start: date, end: date, key: str) -> list[dict[str, Any]]:

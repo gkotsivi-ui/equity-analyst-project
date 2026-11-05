@@ -22,18 +22,95 @@ SEC = "https://www.sec.gov"
 DATA = "https://data.sec.gov"
 
 
-def load_dotenv(path: Path = Path(".env")) -> dict[str, str]:
+HERE = Path(__file__).resolve().parent
+# Values that are still as .env.example gives them.
+PLACEHOLDERS = ("paste-", "your name", "your.email")
+
+
+def env_path() -> Path | None:
+    """The .env file in the current folder, else the one next to the code; None when there is neither."""
+    for folder in (Path.cwd(), HERE):
+        if (folder / ".env").is_file():
+            return folder / ".env"
+    return None
+
+
+def load_dotenv(path: Path | None = None) -> dict[str, str]:
+    """The NAME=value lines of .env. It reads UTF-8, UTF-8 with a BOM, and the UTF-16 that Windows PowerShell 5.1 writes."""
+    path = path or env_path()
     values: dict[str, str] = {}
-    if not path.exists():
+    if path is None or not path.is_file():
         return values
-    for raw in path.read_text(encoding="utf-8-sig").splitlines():
+    data = path.read_bytes()
+    if data[:2] in (b"\xff\xfe", b"\xfe\xff"):
+        text = data.decode("utf-16")
+    else:
+        try:
+            text = data.decode("utf-8-sig")
+        except UnicodeDecodeError:
+            text = data.decode("cp1252", errors="replace")
+    for raw in text.splitlines():
         line = raw.strip()
+        if line.startswith("export "):
+            line = line[len("export "):].strip()
         if not line or line.startswith("#") or "=" not in line:
             continue
         key, value = line.split("=", 1)
         value = value.strip().strip('"').strip("'")
         values[key.strip()] = value
     return values
+
+
+def is_placeholder(value: str) -> bool:
+    """True for an empty value, or one that is still as .env.example gives it."""
+    text = value.strip().lower()
+    return not text or any(p in text for p in PLACEHOLDERS)
+
+
+def no_env_message() -> str:
+    for folder in (Path.cwd(), HERE):
+        if (folder / ".env.txt").is_file():
+            return f"There is no .env file, but there is {folder / '.env.txt'}. Rename it to .env (Notepad adds .txt), then retry."
+    return (f"There is no .env file in {Path.cwd()}. Copy .env.example to .env in the repository folder, "
+            "fill it in, and run the commands from that folder.")
+
+
+def user_agent_problem(agent: str, where: Path | None) -> str | None:
+    """Why SEC EDGAR would refuse SEC_USER_AGENT; None when it holds a name and an email."""
+    if agent and not is_placeholder(agent) and "@" in agent:
+        return None
+    if where is None and not agent:
+        return no_env_message()
+    return (f"SEC_USER_AGENT in {where or 'the environment'} needs your own name and email, "
+            "as in SEC_USER_AGENT=Your Name your.email@purdue.edu. SEC EDGAR refuses requests without them.")
+
+
+def provider_of(key: str) -> str:
+    """The model provider an API key belongs to, from the key's prefix."""
+    if key.startswith("sk-ant-"):
+        return "anthropic"
+    if key.startswith("AIza"):
+        return "google"
+    if key.startswith("sk-"):
+        return "openai"
+    return ""
+
+
+def api_key_problem(key: str, where: Path | None) -> str | None:
+    """Why API_KEY cannot run the roles; None for an Anthropic key or a Google AI Studio key."""
+    provider = provider_of(key)
+    if provider in ("anthropic", "google"):
+        return None
+    if where is None and not key:
+        return no_env_message()
+    place = where or "the environment"
+    if is_placeholder(key):
+        return (f"API_KEY in {place} is empty or still the example. Paste your Anthropic key (it starts with sk-ant-) "
+                "or your Google AI Studio key (it starts with AIza), or run python set_keys.py.")
+    kind = "an OpenAI key" if provider == "openai" else "not a key this desk can use"
+    return (f"API_KEY in {place} is {kind}. The roles and the Verifier run on Anthropic's API (a key that starts with sk-ant-, "
+            "from platform.claude.com) or on Google's Gemini API (a key that starts with AIza, from aistudio.google.com). "
+            "The seven steps alone (lab02_desk.py) need no model key.")
 
 
 CELL_BREAK = "\x01"  # a block tag inside a table cell; see html_to_text
@@ -561,9 +638,10 @@ def main() -> int:
     # A filing's curly quotes or dashes must not stop a run whose output is piped to a file.
     sys.stdout.reconfigure(errors="replace")
     env = load_dotenv()
-    user_agent = os.environ.get("SEC_USER_AGENT") or env.get("SEC_USER_AGENT")
-    if not user_agent or "your name" in user_agent.lower() or "your email" in user_agent.lower():
-        print("Missing SEC_USER_AGENT. Add SEC_USER_AGENT=Your Name your.email@purdue.edu to .env, then retry.", file=sys.stderr)
+    user_agent = os.environ.get("SEC_USER_AGENT") or env.get("SEC_USER_AGENT", "")
+    problem = user_agent_problem(user_agent, env_path())
+    if problem:
+        print(problem, file=sys.stderr)
         return 2
     ticker = args.ticker.upper()
     run_id = datetime.now().strftime("%Y%m%d_%H%M%S")

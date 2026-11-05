@@ -9,9 +9,9 @@ Nothing in the code names a company: the ticker is an argument.
 - `verifier.py`: the Verifier, which checks every sourced number in a report against the saved filings and facts.
 - `roles/`: each role's instructions, one file per role.
 - `lab02_desk.py`: the seven steps, from SEC EDGAR, with no model.
-- `lab03_app.py`: the seven steps, then the four roles of Figure 1 on Anthropic's API, then the report.
+- `lab03_app.py`: the seven steps, then the four roles of Figure 1 on Anthropic's API or Google's Gemini API, then the report.
 - `prices.py`: a closing price for P/E, from financialdatasets.ai.
-- `check_env.py` and `set_keys.py`: check `.env`, and save pasted keys into it.
+- `check_env.py` and `set_keys.py`: check the setup, and save pasted settings into `.env`.
 
 ## The agent team
 
@@ -34,32 +34,58 @@ JSON the graph gives it: the task, the context and the expected output.
 
 ## Setup
 
-Python 3.11 or newer. In this folder:
+You need Python 3.11 or newer and one model key: an Anthropic key (it starts with `sk-ant-`) or a
+Google AI Studio key (it starts with `AIza`). The key picks the provider. The seven steps alone
+(`lab02_desk.py`) need no model key.
 
-```
-python -m pip install -r requirements.txt
-copy .env.example .env
-```
+1. Get the code, and open a terminal in its folder:
 
-On a Mac, use `cp .env.example .env`. Then fill in `.env`; it is never committed.
+   ```
+   git clone https://github.com/gkotsivi-ui/equity-analyst-project.git
+   cd equity-analyst-project
+   ```
+
+   Without git: on the GitHub page, click Code, then Download ZIP. Unzip it, and open a terminal in the unzipped folder.
+
+2. Install the packages. On Windows (if `python` is not found, type `py` in its place in every command):
+
+   ```
+   python -m pip install -r requirements.txt
+   ```
+
+   On a Mac, in a virtual environment. Type `python3` to make it; in each new terminal, run the `source` line again:
+
+   ```
+   python3 -m venv .venv
+   source .venv/bin/activate
+   python -m pip install -r requirements.txt
+   ```
+
+3. Make `.env` and fill it in. Run `python set_keys.py` and paste each value at its prompt, or copy the
+   example (`copy .env.example .env`; on a Mac, `cp .env.example .env`) and edit it in a text editor.
+   `.env` is never committed.
+
+4. Check the setup. Each line says `ok`, `note` or `FIX`, and a `FIX` line says what to do:
+
+   ```
+   python check_env.py
+   ```
 
 | Setting | Needed for | Value |
 |---|---|---|
 | `SEC_USER_AGENT` | every step | your name and email; EDGAR requires it on every request |
-| `API_KEY` | Lab 03 | an Anthropic API key from platform.claude.com, starting with `sk-ant-` |
-| `MODEL`, `EFFORT` | optional | the model and effort for the roles; defaults `claude-opus-5-5` and `medium` |
+| `API_KEY` | the roles and the Verifier | an Anthropic key from platform.claude.com (`sk-ant-...`), or a Google AI Studio key from aistudio.google.com (`AIza...`) |
+| `MODEL`, `EFFORT` | optional | the model for the roles; defaults `claude-opus-5-5` for an Anthropic key and `gemini-3.8-flash` for a Google key. `EFFORT` (default `medium`) applies to Anthropic models |
 | `FINANCIAL_DATASETS_API_KEY` | optional | the key for closing prices; without it, pass `--price` |
 | `AI_TOOLS` | optional | the AI tools named on each report's AI-assistance line |
-
-Check it with `python check_env.py`. It prints the first four characters of the key and your User-Agent.
 
 ## Run
 
 The agent team, with the Verifier on every run (Lab 04):
 
 ```
-python team.py COST --peers WMT,TGT,BJ --price <close>
-python team.py --verify-only output/<run folder>
+python team.py COST --peers WMT,TGT,BJ --price 992.13
+python team.py --verify-only output/COST_20261103_084759_seeded_eps
 ```
 
 The node names print in the graph's order, then the path of the verified report. `--verify-only` runs
@@ -68,7 +94,7 @@ the Verifier on a saved run and nothing else.
 The seven steps only (Lab 02):
 
 ```
-python lab02_desk.py COST --peers WMT,TGT,BJ --price <close>
+python lab02_desk.py COST --peers WMT,TGT,BJ --price 992.13
 python lab02_desk.py COST --step 4
 ```
 
@@ -76,10 +102,11 @@ The seven steps, then the four roles and the report (Lab 03):
 
 ```
 python lab03_app.py AAPL --peers MSFT,GOOGL,DELL
-python lab03_app.py COST --peers WMT,TGT,BJ --price <close>
+python lab03_app.py COST --peers WMT,TGT,BJ --price 992.13
 ```
 
-Replace `<close>` with the closing price, for example `--price 1012.35`.
+992.13 is Costco's close on Oct 27, 2026, the price the Lab 03 report used. For another company, give
+its close, or leave out `--price`.
 
 Expect the seven steps, then the four role names, then the path of the report. Without `--price`, the
 desk uses the last close before the release was accepted, from financialdatasets.ai. One close by date:
@@ -99,6 +126,23 @@ Each run writes `output/<TICKER>_<date>_<time>/`:
 | `nodes/` | each node's input and output, numbered in the order the nodes ran (Lab 04) |
 | `roles.json` | every JSON hand-off between the Strategy Manager and the roles (Lab 03) |
 | `audit.md` | a blank audit table for the human sign-off |
+
+## When a run does not start
+
+Run `python check_env.py` first. It checks Python, the packages, `.env`, SEC EDGAR and the model key,
+and each `FIX` line says what to do.
+
+| What you see | What to do |
+|---|---|
+| `There is no .env file` | Make `.env` in the repository folder (Setup, step 3), and run the commands from that folder. If Windows saved it as `.env.txt`, rename it to `.env`. |
+| `API_KEY ... is an OpenAI key` | The roles run on Anthropic or Google. Use a key that starts with `sk-ant-` or `AIza`. The seven steps (`lab02_desk.py`) need no model key. |
+| `ModuleNotFoundError: No module named 'langgraph'` (or `anthropic`, `requests`) | Install with the same Python that runs the desk: `python -m pip install -r requirements.txt`. On a Mac, run `source .venv/bin/activate` first. |
+| `error: externally-managed-environment` | Make the virtual environment first (Setup, step 2, Mac). |
+| `python` is not found, or the Microsoft Store opens | On Windows, type `py`. On a Mac, type `python3`. |
+| `The '<' operator is reserved` or `no such file or directory: close` | A placeholder was typed as is. Give a number: `--price 992.13`. |
+| `SEC request failed: 403` | `SEC_USER_AGENT` needs your own name and email. |
+| `credit balance is too low` | Add credit to the Anthropic account at platform.claude.com, or use a Google AI Studio key. |
+| `The Gemini API is limiting this key` | Wait a minute and run again, or set `MODEL=gemini-3.5-flash-lite` in `.env`. |
 
 ## Reports in this repository
 
@@ -121,8 +165,9 @@ Each run writes `output/<TICKER>_<date>_<time>/`:
    that each Research Analyst quote appears word for word in the filings, and that each Financial
    Analyst number appears in the data the desk gave it. It runs requested ratios in code and sends a
    failing part back to its role once. Problems that remain are listed at the end of the report.
-6. The roles run on Claude Opus 5.5 with Anthropic's server-side fallback, which re-runs a declined
-   request on another model. `roles.json` records which model served each call.
+6. With an Anthropic key, the roles run on Claude Opus 5.5 with Anthropic's server-side fallback,
+   which re-runs a declined request on another model. With a Google AI Studio key, they run on
+   Gemini 3.8 Flash in JSON mode. `roles.json` records which model served each call.
 7. The Verifier receives only the compiled report, the saved filing texts and the saved facts. It
    skips the Investment Advisor's thesis. A model lists each number with the source the report gives
    it. Code then checks each one: a number sourced to an XBRL tag and period against the facts file;
@@ -140,6 +185,7 @@ python -m unittest discover -s tests
 
 The tests need no network and no key. They cover the tag trap, the full-year filter, the table text,
 the quote and number checks, the calculator, and a full Strategy Manager run against a fake model.
+For the setup, they check how `.env` is read, the key checks, and the Gemini path against a fake reply.
 For the agent team, they check the fixed node order, the single send-back, and that every path to the
 end runs the Verifier with no option to turn it off. They also check the Verifier's marks on a seeded
 EPS, an invented growth rate, a price and an unsourced number.
