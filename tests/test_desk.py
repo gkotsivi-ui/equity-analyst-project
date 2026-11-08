@@ -195,7 +195,8 @@ def example_desk(folder: Path) -> Desk:
 def research(packet: dict[str, Any]) -> dict[str, Any]:
     claim = {"claim": "The company operates 939 warehouses.", "quote": "The Company operates 939 warehouses in 14 countries.", "source": "10-K Item 1"}
     plan = {"claim": "The company plans 30 new warehouses next year.", "quote": "The Company plans to open 30 new warehouses next year.", "source": "10-K Item 7"}
-    return {"overview": [claim], "business_model": [claim], "competitive_position": [claim], "catalysts": [plan], "recent_developments": [plan]}
+    insight = {"claim": "The company operates 939 warehouses in 14 countries.", "source": "10-K Item 1", "line": "The Company operates 939 warehouses in 14 countries."}
+    return {"overview": [claim], "business_model": [claim], "competitive_position": [claim], "catalysts": [plan], "recent_developments": [plan], "insight": insight}
 
 
 GOOD_ANALYSIS = {
@@ -205,6 +206,8 @@ GOOD_ANALYSIS = {
     "peer_comparison": "| Company | Operating margin |\n|---|---|\n| EXM | 3.85% |\n| PEER | 4.18% |",
     "valuation": "No price was given, so there is no P/E; the operating margin is 3.85% on total revenue.",
     "definitions": ["Total revenue, not net sales."],
+    "insight": {"claim": "The operating margin was 3.85% = 11,685.0 / 303,154.0.", "source": "10-K, computed in code",
+                "line": "us-gaap:OperatingIncomeLoss, 2025-09-01 to 2026-08-30"},
 }
 
 
@@ -215,6 +218,8 @@ def advisor(packet: dict[str, Any]) -> dict[str, Any]:
         "thesis": "Revenue grew 10.14% on total revenue, but the operating margin of 3.85% is below the peer's 4.18%, so the case is balanced.",
         "what_would_change_it": "A margin above the peer's.",
         "strategic_recommendations": ["Watch the quarter's growth of 11.10%."],
+        "insight": {"claim": "The company runs 939 warehouses at an operating margin of 3.85%.", "source": "10-K Item 1",
+                    "line": "The Company operates 939 warehouses in 14 countries."},
     }
 
 

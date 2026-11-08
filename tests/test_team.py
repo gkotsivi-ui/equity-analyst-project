@@ -223,7 +223,7 @@ class SkipTests(unittest.TestCase):
 
     def test_no_option_turns_the_verifier_off(self) -> None:
         options = re.findall(r'add_argument\("(--[\w-]+)"', (ROOT / "team.py").read_text(encoding="utf-8"))
-        self.assertEqual(options, ["--peers", "--price", "--verify-only"])
+        self.assertEqual(options, ["--peers", "--price", "--filed", "--verify-only"])
 
     def test_the_team_code_names_no_company(self) -> None:
         for name in ("team.py", "verifier.py"):

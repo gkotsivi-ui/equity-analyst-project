@@ -25,7 +25,7 @@ def report(ok: bool | None, text: str) -> None:
 new_enough = sys.version_info >= (3, 11)
 report(new_enough, f"Python {sys.version.split()[0]} ({sys.executable})" + ("" if new_enough else ": the desk needs Python 3.11 or newer"))
 installed, missing = [], []
-for package in ("requests", "anthropic", "langgraph"):
+for package in ("requests", "anthropic", "langgraph", "markdown"):
     try:
         installed.append(f"{package} {importlib.metadata.version(package)}")
     except importlib.metadata.PackageNotFoundError:
@@ -79,8 +79,22 @@ if where is not None or key:
             model = model_for(provider, setting("MODEL") or DEFAULT_MODEL)
         kind = "an Anthropic key" if provider == "anthropic" else "a Google AI Studio key"
         report(True, f"API_KEY: {kind} ({key[:4]}..., {len(key)} characters)" + (f"; the roles will run on {model}" if model else ""))
+lseg_key, closes_file = setting("LSEG_APP_KEY"), setting("CLOSES_FILE")
+if lseg_key:
+    try:
+        lseg_version = importlib.metadata.version("lseg-data")
+        report(True, f"LSEG_APP_KEY: set, and lseg-data {lseg_version} is installed. Start the Workspace desktop app before a run.")
+    except importlib.metadata.PackageNotFoundError:
+        report(False, f"LSEG_APP_KEY is set, but lseg-data is not installed. Run: {PYTHON} -m pip install lseg-data")
+if closes_file:
+    # Only whether the file is there: the export's contents stay out of every tool but your own code.
+    found = os.path.exists(os.path.expanduser(closes_file))
+    report(found, "CLOSES_FILE: the file is there" if found else f"CLOSES_FILE names {closes_file}, which does not exist.")
 prices = setting("FINANCIAL_DATASETS_API_KEY")
-report(True if prices else None, "FINANCIAL_DATASETS_API_KEY: set" if prices else "FINANCIAL_DATASETS_API_KEY: not set. That is fine: give --price on each run.")
+if not (lseg_key or closes_file or prices):
+    report(None, "No source of closes (LSEG_APP_KEY, CLOSES_FILE or FINANCIAL_DATASETS_API_KEY). That is fine: give --price on each run.")
+else:
+    report(True if prices else None, "FINANCIAL_DATASETS_API_KEY: set" if prices else "FINANCIAL_DATASETS_API_KEY: not set")
 
 if not OFFLINE and agent_ok:
     try:

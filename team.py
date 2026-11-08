@@ -20,6 +20,7 @@ from typing import Any, TypedDict
 import requests
 from langgraph.graph import END, START, StateGraph
 
+import closes
 from lab02_desk import Desk, api_key_problem, env_path, is_placeholder, load_dotenv, millions, user_agent_problem
 from lab03_app import (
     DEFAULT_MODEL,
@@ -53,6 +54,7 @@ class TeamState(TypedDict, total=False):
     ticker: str
     peers: list[str]
     price: float | None
+    filed: str | None  # --filed: the release's filing time, Eastern, when it overrides the 8-K's Accepted time
     run_dir: str
     desk: Desk  # the steps' results in memory; their files are in the run folder
     manager: StrategyManager  # the checklist that checks the parts and compiles the report
@@ -147,7 +149,8 @@ class Team:
         desk.ticker = state["ticker"]
         desk.step1()
         desk.step2()
-        price, note = resolve_price(state.get("price"), desk, self.settings["prices_key"])
+        filed = datetime.fromisoformat(state["filed"]) if state.get("filed") else None
+        price, note = resolve_price(state.get("price"), desk, self.settings["prices_key"], filed)
         desk.step3()
         desk.step4()
         desk.step5(price)
@@ -156,7 +159,7 @@ class Team:
         manager = StrategyManager(desk, self.model, price, note, self.settings["run_time"], self.settings["tools"])
         more = more_ratios(desk)
         keys = ("accessionNumber", "filingDate", "reportDate", "accepted_index", "exhibit99_1", "saved_text")
-        self.save(state, "steps", {"ticker": desk.ticker, "peers": state.get("peers", []), "price": state.get("price")}, {
+        self.save(state, "steps", {"ticker": desk.ticker, "peers": state.get("peers", []), "price": state.get("price"), "filed": state.get("filed")}, {
             "company": desk.company,
             "cik": desk.cik,
             "filings": {form: {k: row.get(k) for k in keys} for form, row in desk.selected.items()},
@@ -294,7 +297,8 @@ def main() -> int:
     parser = argparse.ArgumentParser(description="FIN 67110 Lab 04: the agent team, a graph in code with a Verifier on every run")
     parser.add_argument("ticker", nargs="?", help="Ticker of any U.S. company that files with EDGAR")
     parser.add_argument("--peers", default="", help="Comma-separated peer tickers")
-    parser.add_argument("--price", type=float, help="Close for P/E; without it, the last close before the release (needs FINANCIAL_DATASETS_API_KEY)")
+    parser.add_argument("--price", type=float, help="Close for P/E; without it, the closes reader gives the last close before the release's filing time")
+    parser.add_argument("--filed", type=closes.parse_when, help="The release's filing time, YYYY-MM-DDTHH:MM:SS Eastern; it overrides the Accepted time on the 8-K's EDGAR index page")
     parser.add_argument("--verify-only", metavar="RUN_FOLDER", help="Run the Verifier on a saved run, and nothing else")
     args = parser.parse_args()
     sys.stdout.reconfigure(errors="replace")
@@ -339,7 +343,8 @@ def main() -> int:
     settings = {"user_agent": user_agent, "prices_key": setting("FINANCIAL_DATASETS_API_KEY"), "run_time": run_time, "tools": setting("AI_TOOLS", "Claude Code")}
     team = Team(settings, model)
     print("Graph: " + " -> ".join(NAMES[n] for n in ORDER))
-    state = {"ticker": ticker, "peers": [p.strip().upper() for p in args.peers.split(",") if p.strip()], "price": args.price, "run_dir": str(run_dir)}
+    state = {"ticker": ticker, "peers": [p.strip().upper() for p in args.peers.split(",") if p.strip()], "price": args.price,
+             "filed": args.filed.isoformat() if args.filed else None, "run_dir": str(run_dir)}
     try:
         final = team.graph().invoke(state, {"recursion_limit": 40})
     except requests.RequestException as exc:

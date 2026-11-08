@@ -24,6 +24,7 @@ from typing import Any
 import anthropic
 import requests
 
+import closes
 from lab02_desk import Desk, api_key_problem, env_path, is_placeholder, load_dotenv, millions, provider_of, user_agent_problem
 from prices import last_close_before
 
@@ -104,6 +105,63 @@ ADVISOR_OUTPUT = {
     "what_would_change_it": "one or two sentences",
     "strategic_recommendations": "a list of 2 to 3 sentences for the client: what to watch or do next, each tied to a number or a quote in the context",
 }
+# Lab 05: each analyst's output ends with one Insight, a claim the filings support that the release's first paragraph does not state.
+INSIGHT = {
+    "claim": "one sentence with at least one number: a claim the filings support that context.release_first_paragraph does not state",
+    "source": "the filing it comes from (10-K, 10-Q or Earnings release) and where in it",
+    "line": "the line of that filing that states the claim's number, word for word",
+}
+RESEARCH_OUTPUT["insight"] = INSIGHT
+FINANCIAL_OUTPUT["insight"] = dict(INSIGHT, line="the release line from the context that states the claim's number, word for word, or the XBRL tag and period of the fact in context.facts that states it")
+ADVISOR_OUTPUT["insight"] = dict(INSIGHT, line="a filing line that the analysts quote, word for word, that states the claim's number")
+FIRST_PARAGRAPH = "release_first_paragraph"
+# The exhibit's own header lines, before the release's text starts.
+RELEASE_HEADER = re.compile(r"EX-99.*|Exhibit 99\.1|Press Release|Document|\d+|\S+\.html?", re.I)
+FIGURE = re.compile(r"(\$\s*)?(\d[\d,]*(?:\.\d+)?)\s*(%|percent\b|per cent\b|trillion\b|billion\b|million\b|thousand\b)?", re.I)
+SCALE = {"trillion": 1e12, "billion": 1e9, "million": 1e6, "thousand": 1e3}
+
+
+def first_paragraph(release: str, size: int = 1000) -> str:
+    """The release's first paragraph, read broadly: its opening lines after the exhibit's header, to about 1,000
+    characters, so that the headline figures are in it whether the release prints them in a paragraph or in bullets."""
+    kept: list[str] = []
+    for line in (raw.strip() for raw in release.splitlines()):
+        if not line or (not kept and RELEASE_HEADER.fullmatch(line)):
+            continue
+        kept.append(line)
+        if sum(len(k) for k in kept) >= size:
+            break
+    return "\n".join(kept)
+
+
+def figures(text: str) -> list[tuple[float, float, bool]]:
+    """Each figure in the text as (value, half a unit of its last digit, whether it is a percent), with its scale word
+    applied: $93.9 billion and $93,873 million can be compared. Years and bare counts under 100 are left out."""
+    found = []
+    for m in FIGURE.finditer(text):
+        dollar, digits, unit = m.group(1), m.group(2).replace(",", ""), (m.group(3) or "").lower()
+        value = float(digits)
+        if not dollar and not unit and "." not in digits and (value < 100 or 1900 <= value <= 2100):
+            continue
+        decimals = len(digits.split(".")[1]) if "." in digits else 0
+        scale = SCALE.get(unit, 1.0)
+        found.append((value * scale, 0.5 * 10 ** -decimals * scale, unit in ("%", "percent", "per cent")))
+    return found
+
+
+def only_restates(claim: str, paragraph: str) -> bool:
+    """True when every figure in the claim is a figure the paragraph states: as exact as the paragraph's figure or more,
+    and equal to it at the paragraph's rounding. $93,873 million restates $93.9 billion; 11% does not restate 11.2%,
+    which may be another measure."""
+    mine, theirs = figures(claim), figures(paragraph)
+    slack = 1 + 1e-9
+    return bool(mine) and all(any(p == q and t <= u * slack and abs(v - w) <= u * slack for w, u, q in theirs) for v, t, p in mine)
+
+
+def context_numbers(context: dict[str, Any]) -> set[str]:
+    """The numbers the Investment Advisor may state: those of the analysts' outputs, without the release's first
+    paragraph, which its context holds only so that its Insight can say something else."""
+    return number_keys(json.dumps({k: v for k, v in context.items() if k != FIRST_PARAGRAPH}, ensure_ascii=False))
 
 
 class RoleError(RuntimeError):
@@ -349,6 +407,8 @@ class StrategyManager:
             self.business = self.business or ten_k[:80000]
             self.mdna = self.mdna or ten_k[80000:200000]
         self.sources = normalize(ten_k + "\n" + self.release)
+        self.first_paragraph = first_paragraph(self.release)
+        self.tags = {f"us-gaap:{item['tag']}" for item in desk.fact_rows.values() if item}
         self.variables, self.money = self.calculator_variables()
 
     # ----- the three analysts -----
@@ -365,6 +425,7 @@ class StrategyManager:
                 "10-K Item 7 MD&A": self.mdna,
                 "Earnings release": f"8-K accession {d.selected['8-K']['accessionNumber']}, Exhibit 99.1",
                 "Earnings release text": self.release,
+                FIRST_PARAGRAPH: self.first_paragraph,
             },
             "expected_output": RESEARCH_OUTPUT,
         }
@@ -396,6 +457,27 @@ class StrategyManager:
                     extra = untraced(str(claim["claim"]), number_keys(str(claim["quote"])))
                     if extra:
                         problems.append(f"{key}: the claim states {', '.join(extra)}, which its quote does not contain: {str(claim['claim'])[:240]}")
+        return problems + self.insight_problems(output, None)
+
+    def insight_problems(self, output: dict[str, Any], known: set[str] | None, tags: bool = False) -> list[str]:
+        """Lab 05's two checks on a role's Insight. It must be there: a claim with a number, its source, and the filing's
+        line, which the filings contain. And it must say more than the figures of the release's first paragraph.
+        known holds the numbers the claim may state; None means the numbers of its own line."""
+        insight = output.get("insight") if isinstance(output.get("insight"), dict) else {}
+        claim, source, line = (str(insight.get(k) or "").strip() for k in ("claim", "source", "line"))
+        if not (claim and source and line):
+            return ["insight: missing. End your output with insight: one claim with a number, the filing it comes from, and that filing's line, word for word."]
+        if not [k for k in number_keys(claim) if not re.fullmatch(r"(19|20)\d\d", k)]:
+            return ["insight: the claim states no number. State one claim with a number that the filings support."]
+        problems = []
+        tag = re.search(r"us-gaap:\w+", line)
+        if not quote_found(line, self.sources) and not (tags and tag and tag.group(0) in self.tags):
+            problems.append(f"insight: this line is not in the filings word for word: {line[:240]}")
+        missing = untraced(claim, number_keys(line) if known is None else known)
+        if missing:
+            problems.append(f"insight: the claim states {', '.join(missing)}, which its source does not hold: {claim[:240]}")
+        if only_restates(claim, self.first_paragraph):
+            problems.append("insight: the claim only restates a figure that the earnings release's first paragraph states. State a claim the first paragraph does not.")
         return problems
 
     def financial_packet(self) -> dict[str, Any]:
@@ -442,14 +524,14 @@ class StrategyManager:
         for peer in self.desk.peers:
             if peer["ticker"] not in str(output.get("peer_comparison", "")):
                 problems.append(f"peer_comparison: the peer {peer['ticker']} is missing")
-        return problems
+        return problems + self.insight_problems(output, self.known, tags=True)
 
     def advice_packet(self, research: dict[str, Any], financial: dict[str, Any]) -> dict[str, Any]:
         d = self.desk
         analyst = {k: v for k, v in financial.items() if k != "calculator_requests"}
         return {
             "task": f"Write the investment thesis and the recommendation on {d.company} ({d.ticker}) from the two analysts' outputs.",
-            "context": {"research_analyst": research, "financial_analyst": analyst},
+            "context": {"research_analyst": research, "financial_analyst": analyst, FIRST_PARAGRAPH: self.first_paragraph},
             "expected_output": ADVISOR_OUTPUT,
         }
 
@@ -465,7 +547,7 @@ class StrategyManager:
 
     def check_advice(self, output: dict[str, Any], context: dict[str, Any]) -> list[str]:
         problems = []
-        known = number_keys(json.dumps(context, ensure_ascii=False))
+        known = context_numbers(context)
         if output.get("recommendation") not in {"Buy", "Hold", "Sell"}:
             problems.append("recommendation: write exactly Buy, Hold or Sell")
         number = output.get("deciding_number") if isinstance(output.get("deciding_number"), dict) else {}
@@ -478,7 +560,7 @@ class StrategyManager:
         missing = untraced(written, known)
         if missing:
             problems.append(f"these numbers are not in the analysts' outputs: {', '.join(missing[:12])}")
-        return problems
+        return problems + self.insight_problems(output, known)
 
     def send_back(self, role: str, instructions: str, packet: dict[str, Any], output: dict[str, Any], problems: list[str]) -> dict[str, Any]:
         print(f"[Strategy Manager] Sending the {role}'s part back once: {len(problems)} problem(s)")
@@ -528,6 +610,7 @@ class StrategyManager:
             "facts": facts,
             "ratios_computed_in_code": [{"name": r["name"], "value": r["shown"], "arithmetic": f"{r['arithmetic']} ($ millions, except per share)"} for r in d.ratios],
             "latest_quarter": quarter,
+            FIRST_PARAGRAPH: self.first_paragraph,
             "peers": peers,
             "price": self.price_note,
             "calculator_variables": {name: f"{value / 1e6:,.1f} ($ millions)" if name in self.money else f"{value:,.2f}" for name, value in self.variables.items()},
@@ -631,6 +714,17 @@ class StrategyManager:
             items = [str(i).strip() for i in items or [] if str(i).strip()]
             return "\n".join(f"- {i}" for i in items) if items else "_Not provided._"
 
+        def insight(output: dict[str, Any], role: str) -> str:
+            """The role's Insight line, with the filing and the line it comes from."""
+            item = output.get("insight") if isinstance(output.get("insight"), dict) else {}
+            claim, source, line = (str(item.get(k) or "").strip() for k in ("claim", "source", "line"))
+            if not claim:
+                return f"Insight: _the {role} gave none._"
+            if "us-gaap:" in line:
+                return f"Insight: {claim} ({role}; {source}: {line})"
+            flag = "" if quote_found(line, self.sources) else " **[line not found word for word in the filings]**"
+            return f"Insight: {claim} ({role}; {source}: \"{line}\"){flag}"
+
         number = advice.get("deciding_number") if isinstance(advice.get("deciding_number"), dict) else {}
         recommendation = advice.get("recommendation") if advice.get("recommendation") in {"Buy", "Hold", "Sell"} else None
         decision = (
@@ -640,20 +734,21 @@ class StrategyManager:
             f"What would change it: {str(advice.get('what_would_change_it', '')).strip()}"
         ) if recommendation else "_Not provided._"
         return {
-            "Overview": "\n\n".join([claims("overview"), claims("business_model"), "### Core figures from the desk's steps (read and computed in code)", self.core_table()]),
+            "Overview": "\n\n".join([claims("overview"), claims("business_model"), insight(research, "Research Analyst"),
+                                     "### Core figures from the desk's steps (read and computed in code)", self.core_table()]),
             "Market Positioning and Growth Outlook": "\n\n".join([
                 "### Competitive position (Research Analyst)", claims("competitive_position"),
                 "### Growth, margins, returns and cash flow (Financial Analyst)", text("statement_analysis"),
                 "### The latest quarter (Financial Analyst)", text("latest_quarter"),
                 "### Peers on the same definitions (Financial Analyst)", text("peer_comparison"),
             ]),
-            "Valuation Insights": text("valuation"),
+            "Valuation Insights": "\n\n".join([text("valuation"), insight(financial, "Financial Analyst")]),
             "Future Developments and Strategic Recommendations": "\n\n".join([
                 "### Catalysts (Research Analyst)", claims("catalysts"),
                 "### Recent developments (Research Analyst)", claims("recent_developments"),
                 "### Strategic recommendations (Investment Advisor)", bullets(advice.get("strategic_recommendations")),
             ]),
-            "Investment Recommendation": decision,
+            "Investment Recommendation": "\n\n".join([decision, insight(advice, "Investment Advisor")]),
         }
 
     def core_table(self) -> str:
@@ -711,9 +806,12 @@ class StrategyManager:
         line2 = f"Run time: {t:%Y-%m-%d %H:%M:%S} {t.tzname()} (UTC{t:%z}); model {self.model.model}; price: {self.price_note}"
         quotes = [c for key in RESEARCH_SECTIONS for c in research.get(key) or [] if isinstance(c, dict) and c.get("quote")]
         found = sum(quote_found(str(c["quote"]), self.sources) for c in quotes)
+        insights = [line for body in parts.values() for line in body.splitlines() if line.startswith("Insight:")]
+        given = [line for line in insights if "gave none" not in line]
         checklist = [
             f"- The five parts: {'all present' if not empty else 'missing ' + ', '.join(empty)}",
             f"- Research Analyst quotes found word for word in the filings: {found} of {len(quotes)}",
+            f"- Insight lines, one from each analyst: {len(given)} of {len(insights)}",
             f"- Calculator requests computed in code: {self.calculator_count}",
             f"- Parts sent back once: {', '.join(self.sent_back) if self.sent_back else 'none'}",
         ]
@@ -780,13 +878,25 @@ def write_audit(path: Path, desk: Desk) -> None:
     path.write_text("\n".join(lines), encoding="utf-8")
 
 
-def resolve_price(price: float | None, desk: Desk, key: str) -> tuple[float | None, str]:
+def resolve_price(price: float | None, desk: Desk, key: str, filed: datetime | None = None) -> tuple[float | None, str]:
+    """The one market number: --price when given; else the last close before the release's filing time, from the
+    closes reader (LSEG Workspace or the CSV file in .env), then from financialdatasets.ai. --filed overrides the
+    "Accepted" time that step 2 read from the 8-K's EDGAR index page."""
     if price is not None:
         return price, f"${price:,.2f}, given with --price"
     accepted = desk.selected["8-K"].get("accepted_index")
-    if not key or not accepted:
-        return None, "none; pass --price, or add FINANCIAL_DATASETS_API_KEY to .env"
-    when = datetime.strptime(accepted, "%Y-%m-%d %H:%M:%S")
+    if filed is None and not accepted:
+        return None, "none; the 8-K has no Accepted time, so give --filed or --price"
+    when = filed or datetime.strptime(accepted, "%Y-%m-%d %H:%M:%S")
+    moment = f"{when:%Y-%m-%d %H:%M:%S} ET, " + ("given with --filed" if filed else "when the release was accepted")
+    found = closes.last_close_with_source(desk.ticker, when)
+    if isinstance(found, tuple):
+        day, close, source = found
+        note = f"${close:,.2f}, the close of {day}, the last close before {moment}, from {source}"
+        print(f"\nPrice: {note}")
+        return close, note
+    if not key:
+        return None, "none; the closes reader has no close for it; set LSEG_APP_KEY or CLOSES_FILE in .env, or give --price"
     try:
         found = last_close_before(desk.ticker, when, key)
     except requests.RequestException as exc:
@@ -794,8 +904,9 @@ def resolve_price(price: float | None, desk: Desk, key: str) -> tuple[float | No
     if not found:
         return None, "none; no close found before the release"
     day, close = found
-    print(f"\nPrice: {close:,.2f}, the close of {day}, the last close before the release was accepted ({accepted} ET), from financialdatasets.ai")
-    return close, f"${close:,.2f}, the close of {day}, the last close before the release was accepted ({accepted} ET), from financialdatasets.ai"
+    note = f"${close:,.2f}, the close of {day}, the last close before {moment}, from financialdatasets.ai"
+    print(f"\nPrice: {note}")
+    return close, note
 
 
 def main() -> int:

@@ -1,3 +1,4 @@
 requests>=2.31,<3
 anthropic>=2.3,<3
 langgraph>=1.2,<2
+markdown>=3.5,<4

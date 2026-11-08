@@ -5,9 +5,11 @@ A ticker goes in. The desk finds the latest 10-K, 10-Q and earnings release, rea
 as XBRL data, computes the core ratios in code, and four roles write a five-part report.
 Nothing in the code names a company: the ticker is an argument.
 
+- `page.py`: the page (Lab 05). Type a ticker, press Run, watch each node run, and read the verified report.
 - `team.py`: the agent team (Lab 04), a LangGraph graph in code with a Verifier on every run.
 - `verifier.py`: the Verifier, which checks every sourced number in a report against the saved filings and facts.
-- `roles/`: each role's instructions, one file per role.
+- `roles/`: each analyst role's instructions, one file per role.
+- `closes.py`: the closes reader (Week 4), from LSEG Workspace or an exported CSV file.
 - `lab02_desk.py`: the seven steps, from SEC EDGAR, with no model.
 - `lab03_app.py`: the seven steps, then the four roles of Figure 1 on Anthropic's API or Google's Gemini API, then the report.
 - `prices.py`: a closing price for P/E, from financialdatasets.ai.
@@ -31,6 +33,18 @@ flowchart LR
 The order is the same on every run, and code decides every edge. A role the Manager sends back
 returns to the Manager, and no role runs more than two times in one run. Each role receives only the
 JSON the graph gives it: the task, the context and the expected output.
+
+Each analyst's output ends with one Insight (Lab 05): a claim with a number, which the filings
+support and the earnings release's first paragraph does not state, with the filing and its line.
+The Strategy Manager sends a part back once if its Insight is missing, or names a line the filings
+do not contain, or only restates a figure of the release's first paragraph. The desk reads that
+paragraph broadly, as the release's opening text up to about 1,000 characters, so a headline in
+bullets counts too. The report prints each role's Insight on a line that begins `Insight:`, and the
+Verifier marks its number like any other.
+
+The `roles/` files are the analysts' personas. Each states, in six parts: who the role is; how it
+reads a company; what it is given; the criteria it scores, each with a number and its source; what
+would change its view; and its output, which ends with the Insight.
 
 ## Setup
 
@@ -76,10 +90,26 @@ Google AI Studio key (it starts with `AIza`). The key picks the provider. The se
 | `SEC_USER_AGENT` | every step | your name and email; EDGAR requires it on every request |
 | `API_KEY` | the roles and the Verifier | an Anthropic key from platform.claude.com (`sk-ant-...`), or a Google AI Studio key from aistudio.google.com (`AIza...`) |
 | `MODEL`, `EFFORT` | optional | the model for the roles; defaults `claude-opus-5-5` for an Anthropic key and `gemini-3.8-flash` for a Google key. `EFFORT` (default `medium`) applies to Anthropic models |
-| `FINANCIAL_DATASETS_API_KEY` | optional | the key for closing prices; without it, pass `--price` |
+| `LSEG_APP_KEY` | optional | the App Key for LSEG Workspace, for the closes reader; the Workspace desktop app must run |
+| `CLOSES_FILE` | optional | instead of LSEG: the path of a CSV file of closes exported from Workspace, or of a folder of `TICKER.csv` files; keep it outside this folder |
+| `LSEG_RICS`, `LSEG_CLOSE_FIELD` | optional | a ticker's RIC when the reader cannot find it (`TICKER=RIC`, comma-separated), and the LSEG field to read (default `TR.PriceClose`) |
+| `FINANCIAL_DATASETS_API_KEY` | optional | the class key for closing prices, used when the closes reader has none |
 | `AI_TOOLS` | optional | the AI tools named on each report's AI-assistance line |
 
 ## Run
+
+The page, for anyone who does not use a terminal (Lab 05). On Windows, double-click
+`start_page.bat`; on a Mac, double-click `start_page.command` (the first time, right-click it and
+choose Open). Or type:
+
+```
+python page.py
+```
+
+The page opens in your browser at http://127.0.0.1:8765. Type a ticker, optional peers, and a price
+if you have one, and press Run. Each node's name appears as it runs; when the run ends, the verified
+report shows with its marks. The page runs `team.py`, prints the same command a terminal would take,
+and lists the saved reports. It answers on this computer only and runs one job at a time.
 
 The agent team, with the Verifier on every run (Lab 04):
 
@@ -90,6 +120,12 @@ python team.py --verify-only output/COST_20261103_084759_seeded_eps
 
 The node names print in the graph's order, then the path of the verified report. `--verify-only` runs
 the Verifier on a saved run and nothing else.
+
+Without `--price`, the price is the last close before the earnings release's filing time: step 2
+reads the 8-K's "Accepted" time from its EDGAR index page, and `--filed 2026-09-24T16:17:37` (Eastern)
+overrides it. The closes reader gives that close from LSEG Workspace or `CLOSES_FILE`, then
+financialdatasets.ai if the reader has none. The close reaches the Financial Analyst only as the one
+price in its context, for P/E computed in code.
 
 The seven steps only (Lab 02):
 
@@ -108,12 +144,31 @@ python lab03_app.py COST --peers WMT,TGT,BJ --price 992.13
 992.13 is Costco's close on Oct 27, 2026, the price the Lab 03 report used. For another company, give
 its close, or leave out `--price`.
 
-Expect the seven steps, then the four role names, then the path of the report. Without `--price`, the
-desk uses the last close before the release was accepted, from financialdatasets.ai. One close by date:
+Expect the seven steps, then the four role names, then the path of the report.
+
+## The closes reader (Week 4)
+
+`closes.py` has two functions: `daily_closes(ticker, start, end)`, the official daily closes between
+two dates, and `last_close_before(ticker, when)`, the last close before a date and time, a trading
+day's close being 4:00 PM Eastern. When the source has nothing for a ticker, each returns
+`"not available"` and the agent team still finishes. Install LSEG's library, then print one close:
 
 ```
-python prices.py COST 2026-10-27
+python -m pip install lseg-data
+python closes.py COST 2026-09-24T16:17:37
 ```
+
+The reader opens a desktop session with the App Key in `LSEG_APP_KEY`; start the Workspace desktop
+app and sign in first. It asks for the field `TR.PriceClose` and tries the RIC suffixes `.O`, `.N`,
+`.A`, `.K` and `.P` in turn. Check one close it prints against the exchange's official close for that
+date; if they differ, set `LSEG_CLOSE_FIELD` (for example `OFF_CLOSE`) and check again. Until LSEG
+approves your account, export the closes from Workspace as CSV, keep the file outside this folder,
+and put its path in `.env` as `CLOSES_FILE`. The reader finds the date and close columns by name, and
+never uses an adjusted close.
+
+The data rule: the closes stay in code. The desk keeps one close for P/E, prints its date and source
+in the report's second line, and saves no list of closes. Export files stay out of the repository.
+The class key still gives one close by date: `python prices.py COST 2026-10-27`.
 
 Each run writes `output/<TICKER>_<date>_<time>/`:
 
@@ -169,7 +224,7 @@ and each `FIX` line says what to do.
    which re-runs a declined request on another model. With a Google AI Studio key, they run on
    Gemini 3.8 Flash in JSON mode. `roles.json` records which model served each call.
 7. The Verifier receives only the compiled report, the saved filing texts and the saved facts. It
-   skips the Investment Advisor's thesis. A model lists each number with the source the report gives
+   skips the Investment Advisor's thesis, but not any line that begins `Insight:`. A model lists each number with the source the report gives
    it. Code then checks each one: a number sourced to an XBRL tag and period against the facts file;
    a quoted line against the filing text, allowing for spacing and formatting; a ratio by recomputing
    its arithmetic. A model then checks that each quoted line states that number for that period, in
@@ -186,6 +241,9 @@ python -m unittest discover -s tests
 The tests need no network and no key. They cover the tag trap, the full-year filter, the table text,
 the quote and number checks, the calculator, and a full Strategy Manager run against a fake model.
 For the setup, they check how `.env` is read, the key checks, and the Gemini path against a fake reply.
+For Lab 05, they check the two Insight checks and the three Insight lines in a report, and the page:
+its form, the report files it serves, and that another website cannot start a run. For the closes
+reader, they use made-up CSV files and a stand-in for LSEG's library, never real market data.
 For the agent team, they check the fixed node order, the single send-back, and that every path to the
 end runs the Verifier with no option to turn it off. They also check the Verifier's marks on a seeded
 EPS, an invented growth rate, a price and an unsourced number.

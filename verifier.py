@@ -142,6 +142,9 @@ def lines_to_check(lines: list[str]) -> list[tuple[int, str]]:
             section, sub = "appendix", ""
         if number <= 3 or not line.strip() or re.fullmatch(r"\|?[\s\-:|]+\|?", line.strip()):
             continue
+        if line.startswith("Insight:"):
+            keep.append((number, line))  # every role's Insight is checked, the Investment Advisor's too
+            continue
         if line.startswith(("This is a learning exercise", "AI assistance:", "Any remaining errors")):
             continue
         if "checklist" in sub.lower() or "(Investment Advisor)" in sub:
